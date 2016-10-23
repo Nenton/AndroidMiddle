@@ -1,6 +1,8 @@
 package com.nenton.androidmiddle.mvp.presenters;
 
 
+import android.os.Handler;
+
 import com.nenton.androidmiddle.mvp.models.AuthModel;
 import com.nenton.androidmiddle.mvp.views.IAuthView;
 import com.nenton.androidmiddle.ui.custom_views.AuthPanel;
@@ -50,6 +52,7 @@ public class AuthPresenter implements IAuthPresenter {
     public void clickOnVk() {
         if (mIAuthView != null) {
             mIAuthView.showMessage("VK");
+
         }
     }
 
@@ -74,8 +77,12 @@ public class AuthPresenter implements IAuthPresenter {
                 mIAuthView.getAuthPanel().setCustomState(AuthPanel.LOGIN_STATE);
             } else {
                 // TODO: 21.10.2016 авторизация
-                mAuthModel.loginUser(mIAuthView.getAuthPanel().getUsetEmail(), mIAuthView.getAuthPanel().getUsetPassword());
-                mIAuthView.showMessage("Запрос авторизации пользователя");
+                if (getView().getAuthPanel().isTextWatcherError()){
+                    mAuthModel.loginUser(mIAuthView.getAuthPanel().getUsetEmail(), mIAuthView.getAuthPanel().getUsetPassword());
+                    mIAuthView.showMessage("Запрос авторизации пользователя");
+                } else {
+                    getView().showMessage("Введите корректные данные");
+                }
             }
         }
     }
@@ -84,6 +91,13 @@ public class AuthPresenter implements IAuthPresenter {
     public void clickOnShowCatalog() {
         if (mIAuthView != null) {
             mIAuthView.showMessage("CATALOG");
+            getView().showLoad();
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    getView().hideLoad();
+                }
+            },3000);
         }
     }
 

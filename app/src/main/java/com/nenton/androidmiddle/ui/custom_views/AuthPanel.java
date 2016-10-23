@@ -4,7 +4,10 @@ import android.animation.Animator;
 import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.widget.CardView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewAnimationUtils;
@@ -27,6 +30,7 @@ public class AuthPanel extends LinearLayout {
     public static final int IDLE_STATE = 1;
 
     private int mCustomState = 1;
+    private boolean corectEmail, corectPass;
 
     @BindView(R.id.auth_card)
     CardView mAuthCard;
@@ -38,6 +42,11 @@ public class AuthPanel extends LinearLayout {
     EditText emailEt;
     @BindView(R.id.login_password_et)
     EditText passwordEt;
+
+    @BindView(R.id.login_email_TIL)
+    TextInputLayout mLoginEmailTil;
+    @BindView(R.id.login_password_TIL)
+    TextInputLayout mLoginPasswordTil;
 
     private Context mContext;
 
@@ -52,7 +61,56 @@ public class AuthPanel extends LinearLayout {
     protected void onFinishInflate() {
         super.onFinishInflate();
         ButterKnife.bind(this);
+        setTextWatchers();
         showViewFromState();
+    }
+
+    private void setTextWatchers() {
+        emailEt.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                corectEmail = false;
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (String.valueOf(s).contains("@")) {
+                    corectEmail = true;
+                    mLoginEmailTil.setErrorEnabled(false);
+                } else {
+                    mLoginEmailTil.setError("В email отсутствует \"@\"");
+                }
+            }
+        });
+        passwordEt.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                corectPass = false;
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (String.valueOf(s).length() >= 8) {
+                    corectPass = true;
+                    mLoginPasswordTil.setErrorEnabled(false);
+                } else {
+                    mLoginPasswordTil.setError("Длина пароля должна быть больше 8");
+                }
+            }
+        });
+    }
+
+    public boolean isTextWatcherError() {
+        return corectEmail && corectPass;
     }
 
     @Override
@@ -101,27 +159,27 @@ public class AuthPanel extends LinearLayout {
         }
     }
 
-    public boolean isIdleState(){
-        return mCustomState==IDLE_STATE;
+    public boolean isIdleState() {
+        return mCustomState == IDLE_STATE;
     }
 
-    private void animationVisible(View view){
-        Animation animation = AnimationUtils.makeInAnimation(mContext,true);
+    private void animationVisible(View view) {
+        Animation animation = AnimationUtils.makeInAnimation(mContext, true);
         view.setVisibility(VISIBLE);
         view.startAnimation(animation);
     }
 
-    private void animationGone(View view){
-        Animation animation = AnimationUtils.makeOutAnimation(mContext,true);
+    private void animationGone(View view) {
+        Animation animation = AnimationUtils.makeOutAnimation(mContext, true);
         view.startAnimation(animation);
         view.setVisibility(GONE);
     }
 
-    public String getUsetEmail(){
+    public String getUsetEmail() {
         return String.valueOf(emailEt.getText());
     }
 
-    public String getUsetPassword(){
+    public String getUsetPassword() {
         return String.valueOf(passwordEt.getText());
     }
 
