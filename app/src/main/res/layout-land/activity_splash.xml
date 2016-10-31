@@ -6,9 +6,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/authback"
     android:fitsSystemWindows="true"
-    tools:context="com.nenton.androidmiddle.RootActivity">
+    tools:context="com.nenton.androidmiddle.ui.activities.SplashActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -63,7 +62,7 @@
 
             <android.support.v7.widget.CardView
                 android:id="@+id/auth_card"
-                style="@style/LoginCard"
+                style="@style/CustomCard.LoginCard"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:visibility="gone"

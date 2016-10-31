@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<group android:checkableBehavior="single">
+    <item android:id="@+id/nav_account"
+          android:icon="@drawable/ic_account_24"
+          android:title="@string/nav_account"/>
+    <item android:id="@+id/nav_catalog"
+          android:icon="@drawable/ic_local_mall_black_24dp"
+          android:title="@string/nav_catalog"
+        android:checked="true"/>
+    <item android:id="@+id/nav_favorites"
+          android:icon="@drawable/ic_favorite_black_24dp"
+          android:title="@string/nav_favorites"/>
+    <item android:id="@+id/nav_orders"
+          android:icon="@drawable/ic_shopping_basket_black_24dp"
+          android:title="@string/nav_orders"/>
+    <item android:id="@+id/nav_notifications"
+          android:icon="@drawable/ic_notifications_black_24dp"
+          android:title="@string/nav_notifications"/>
+</group>
+</menu>

@@ -1,11 +1,10 @@
-package com.nenton.androidmiddle;
+package com.nenton.androidmiddle.ui.activities;
 
-import android.os.Handler;
+import android.content.Intent;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.CardView;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -13,6 +12,8 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 
+import com.nenton.androidmiddle.BuildConfig;
+import com.nenton.androidmiddle.R;
 import com.nenton.androidmiddle.mvp.presenters.AuthPresenter;
 import com.nenton.androidmiddle.mvp.presenters.IAuthPresenter;
 import com.nenton.androidmiddle.mvp.views.IAuthView;
@@ -25,7 +26,7 @@ import butterknife.BindViews;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class RootActivity extends AppCompatActivity implements IAuthView {
+public class SplashActivity extends AppCompatActivity implements IAuthView {
 
     IAuthPresenter mIAuthPresenter = AuthPresenter.getInstance();
 
@@ -50,7 +51,7 @@ public class RootActivity extends AppCompatActivity implements IAuthView {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_root);
+        setContentView(R.layout.activity_splash);
         ButterKnife.bind(this);
         mIAuthPresenter.takeView(this);
         mIAuthPresenter.initView();
@@ -96,6 +97,8 @@ public class RootActivity extends AppCompatActivity implements IAuthView {
 //        },3000);
     }
 
+    //region ========================= IView =========================
+
     @Override
     public void showMessage(String message) {
         Snackbar.make(mCoordinatorLayout, message, Snackbar.LENGTH_LONG).show();
@@ -135,6 +138,8 @@ public class RootActivity extends AppCompatActivity implements IAuthView {
 // TODO: 21.10.2016 hide load animation
     }
 
+    //endregion
+
     @Override
     public void showLoginBtn() {
         mLoginBtn.setVisibility(View.VISIBLE);
@@ -153,6 +158,12 @@ public class RootActivity extends AppCompatActivity implements IAuthView {
     @Override
     public AuthPanel getAuthPanel() {
         return mAuthPanel;
+    }
+
+    @Override
+    public void showCatalogScreen() {
+        Intent intent = new Intent(this, RootActivity.class);
+        startActivity(intent);
     }
 
     @Override

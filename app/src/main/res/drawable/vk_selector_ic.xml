@@ -8,7 +8,7 @@
                     <size android:width="56dp" android:height="56dp"/>
                 </shape>
             </item>
-            <item android:drawable="@drawable/vk_24_ic"
+            <item android:drawable="@drawable/ic_vk_24"
                   android:top="16dp"
                   android:bottom="16dp"
                   android:left="16dp"
@@ -23,7 +23,7 @@
                     <size android:width="56dp" android:height="56dp"/>
                 </shape>
             </item>
-            <item android:drawable="@drawable/vk_24_ic"
+            <item android:drawable="@drawable/ic_vk_24"
                 android:top="16dp"
                 android:bottom="16dp"
                 android:left="16dp"

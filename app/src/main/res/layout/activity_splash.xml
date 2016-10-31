@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/activity_root"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:context="com.nenton.androidmiddle.ui.activities.SplashActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:indeterminate="true"
+            android:visibility="gone"
+            tools:visibility="visible"/>
+
+        <ImageView
+            android:id="@+id/logo_img"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="48dp"
+            android:src="@drawable/firebase"/>
+
+        <com.nenton.androidmiddle.ui.custom_views.TextViewCustom
+            android:id="@+id/app_name_txt"
+            xmlns:custom="http://schemas.android.com/apk/res/com.nenton.androidmiddle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/logo_img"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="24dp"
+            android:text="@string/app_name"
+            android:textColor="@color/white"
+            android:textSize="40sp"
+            custom:font="fonts/PTBebasNeueBook.ttf"/>
+
+        <com.nenton.androidmiddle.ui.custom_views.AuthPanel
+            android:id="@+id/auth_wrap"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/wrap_soc_btn"
+            android:orientation="vertical">
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/auth_card"
+                style="@style/CustomCard.LoginCard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                tools:visibility="visible">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/login_email_TIL"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <EditText
+                            android:id="@+id/login_email_et"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Введите e-mail"
+                            android:textColor="@color/black"
+                            android:textColorHint="@color/greyLight"
+                            android:textSize="14sp"
+                            android:inputType="textEmailAddress"/>
+                    </android.support.design.widget.TextInputLayout>
+
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/login_password_TIL"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <EditText
+                            android:id="@+id/login_password_et"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Введите пароль"
+                            android:textColor="@color/black"
+                            android:textColorHint="@color/greyLight"
+                            android:textSize="14sp"
+                            android:inputType="textPassword"/>
+                    </android.support.design.widget.TextInputLayout>
+                </LinearLayout>
+
+            </android.support.v7.widget.CardView>
+
+            <Button
+                android:id="@+id/show_catalog_btn"
+                style="@style/CustomButton"
+                android:text="Смотреть каталог"
+                android:theme="@style/ShowBtn"/>
+
+            <Button
+                android:id="@+id/login_btn"
+                style="@style/CustomButton"
+                android:text="Войти"
+                android:theme="@style/StartBtn"/>
+
+        </com.nenton.androidmiddle.ui.custom_views.AuthPanel>
+
+        <LinearLayout
+            android:id="@+id/wrap_soc_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingBottom="16dp"
+            android:paddingTop="16dp">
+
+            <ImageButton
+                android:id="@+id/vk_btn"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:background="@drawable/vk_selector_ic"/>
+
+            <ImageButton
+                android:id="@+id/fb_btn"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:background="@drawable/fb_selector_ic"/>
+
+            <ImageButton
+                android:id="@+id/twitter_btn"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:background="@drawable/twitter_selector_ic"/>
+
+        </LinearLayout>
+    </RelativeLayout>
+</android.support.design.widget.CoordinatorLayout>

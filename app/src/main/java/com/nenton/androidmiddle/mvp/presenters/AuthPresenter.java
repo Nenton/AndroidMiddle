@@ -7,10 +7,9 @@ import com.nenton.androidmiddle.mvp.models.AuthModel;
 import com.nenton.androidmiddle.mvp.views.IAuthView;
 import com.nenton.androidmiddle.ui.custom_views.AuthPanel;
 
-public class AuthPresenter implements IAuthPresenter {
+public class AuthPresenter extends AbstractPresenter<IAuthView> implements IAuthPresenter {
 
     private static AuthPresenter ourInstance = new AuthPresenter();
-    private IAuthView mIAuthView;
     private AuthModel mAuthModel;
 
     private AuthPresenter() {
@@ -22,64 +21,49 @@ public class AuthPresenter implements IAuthPresenter {
     }
 
     @Override
-    public void takeView(IAuthView mAuthView) {
-        mIAuthView = mAuthView;
-    }
-
-    @Override
-    public void dropView() {
-        mIAuthView = null;
-    }
-
-    @Override
     public void initView() {
-        if (mIAuthView != null) {
+        if (getView() != null) {
             if (checkUserAuth()) {
-                mIAuthView.hideLoginBtn();
+                getView().hideLoginBtn();
             } else {
-                mIAuthView.showLoginBtn();
+                getView().showLoginBtn();
             }
         }
 
     }
 
     @Override
-    public IAuthView getView() {
-        return mIAuthView;
-    }
-
-    @Override
     public void clickOnVk() {
-        if (mIAuthView != null) {
-            mIAuthView.showMessage("VK");
+        if (getView() != null) {
+            getView().showMessage("VK");
 
         }
     }
 
     @Override
     public void clickOnFb() {
-        if (mIAuthView != null) {
-            mIAuthView.showMessage("FB");
+        if (getView() != null) {
+            getView().showMessage("FB");
         }
     }
 
     @Override
     public void clickOnTwitter() {
-        if (mIAuthView != null) {
-            mIAuthView.showMessage("TWITTER");
+        if (getView() != null) {
+            getView().showMessage("TWITTER");
         }
     }
 
     @Override
     public void clickOnLogin() {
         if (getView() != null && getView().getAuthPanel() != null){
-            if (mIAuthView.getAuthPanel().isIdleState()){
-                mIAuthView.getAuthPanel().setCustomState(AuthPanel.LOGIN_STATE);
+            if (getView().getAuthPanel().isIdleState()){
+                getView().getAuthPanel().setCustomState(AuthPanel.LOGIN_STATE);
             } else {
                 // TODO: 21.10.2016 авторизация
                 if (getView().getAuthPanel().isTextWatcherError()){
-                    mAuthModel.loginUser(mIAuthView.getAuthPanel().getUsetEmail(), mIAuthView.getAuthPanel().getUsetPassword());
-                    mIAuthView.showMessage("Запрос авторизации пользователя");
+                    mAuthModel.loginUser(getView().getAuthPanel().getUsetEmail(), getView().getAuthPanel().getUsetPassword());
+                    getView().showMessage("Запрос авторизации пользователя");
                 } else {
                     getView().showMessage("Введите корректные данные");
                 }
@@ -89,15 +73,17 @@ public class AuthPresenter implements IAuthPresenter {
 
     @Override
     public void clickOnShowCatalog() {
-        if (mIAuthView != null) {
-            mIAuthView.showMessage("CATALOG");
-            getView().showLoad();
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    getView().hideLoad();
-                }
-            },3000);
+        if (getView() != null) {
+//            mIAuthView.showMessage("CATALOG");
+//            getView().showLoad();
+            // TODO: 27.10.2016 if update data complited go to in screen catalog
+            getView().showCatalogScreen();
+//            new Handler().postDelayed(new Runnable() {
+//                @Override
+//                public void run() {
+//                    getView().hideLoad();
+//                }
+//            },3000);
         }
     }
 
