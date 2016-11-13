@@ -14,6 +14,9 @@ import android.widget.ProgressBar;
 
 import com.nenton.androidmiddle.BuildConfig;
 import com.nenton.androidmiddle.R;
+
+import com.nenton.androidmiddle.di.DaggerService;
+import com.nenton.androidmiddle.di.sqopes.AuthScope;
 import com.nenton.androidmiddle.mvp.presenters.AuthPresenter;
 import com.nenton.androidmiddle.mvp.presenters.IAuthPresenter;
 import com.nenton.androidmiddle.mvp.views.IAuthView;
@@ -21,14 +24,19 @@ import com.nenton.androidmiddle.ui.custom_views.AuthPanel;
 
 import java.util.List;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
 import butterknife.BindView;
 import butterknife.BindViews;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import dagger.Provides;
 
 public class SplashActivity extends AppCompatActivity implements IAuthView {
 
-    IAuthPresenter mIAuthPresenter = AuthPresenter.getInstance();
+    @Inject
+    AuthPresenter mAuthPresenter;
 
     @BindViews({R.id.vk_btn,R.id.fb_btn,R.id.twitter_btn})
     List<ImageButton> mImageButtons;
@@ -53,13 +61,24 @@ public class SplashActivity extends AppCompatActivity implements IAuthView {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
         ButterKnife.bind(this);
-        mIAuthPresenter.takeView(this);
-        mIAuthPresenter.initView();
+
+        Component component = DaggerService.getComponent(Component.class);
+        if (component == null){
+            component = createAuthViewComponent();
+            DaggerService.registerComponent(Component.class, component);
+        }
+        component.inject(this);
+
+        mAuthPresenter.takeView(this);
+        mAuthPresenter.initView();
     }
 
     @Override
     protected void onDestroy() {
-        mIAuthPresenter.dropView();
+        mAuthPresenter.dropView();
+        if (isFinishing()){
+            DaggerService.unregisterScope(AuthScope.class);
+        }
         super.onDestroy();
     }
 
@@ -82,19 +101,12 @@ public class SplashActivity extends AppCompatActivity implements IAuthView {
 
     @OnClick(R.id.login_btn)
     public void loginBtn() {
-        mIAuthPresenter.clickOnLogin();
+        mAuthPresenter.clickOnLogin();
     }
 
     @OnClick(R.id.show_catalog_btn)
     public void showCatalogBtn() {
-        mIAuthPresenter.clickOnShowCatalog();
-//        showLoad();
-//        new Handler().postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-//                hideLoad();
-//            }
-//        },3000);
+        mAuthPresenter.clickOnShowCatalog();
     }
 
     //region ========================= IView =========================
@@ -152,7 +164,7 @@ public class SplashActivity extends AppCompatActivity implements IAuthView {
 
     @Override
     public IAuthPresenter getPresenter() {
-        return mIAuthPresenter;
+        return mAuthPresenter;
     }
 
     @Override
@@ -164,6 +176,7 @@ public class SplashActivity extends AppCompatActivity implements IAuthView {
     public void showCatalogScreen() {
         Intent intent = new Intent(this, RootActivity.class);
         startActivity(intent);
+        finish();
     }
 
     @Override
@@ -174,4 +187,28 @@ public class SplashActivity extends AppCompatActivity implements IAuthView {
             super.onBackPressed();
         }
     }
+
+    //region ========================= DI =========================
+
+    @dagger.Module
+    public class Module{
+        @Provides
+        @AuthScope
+        AuthPresenter provideAuthPresenter(){
+            return new AuthPresenter();
+        }
+    }
+
+    @dagger.Component(modules = SplashActivity.Module.class)
+    @AuthScope
+    interface Component{
+        void inject(SplashActivity activity);
+    }
+
+    private Component createAuthViewComponent(){
+        return DaggerSplashActivity_Component.builder()
+        .module(new Module())
+        .build();
+    }
+    //endregion
 }

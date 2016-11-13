@@ -5,7 +5,7 @@ import android.support.annotation.Nullable;
 import com.nenton.androidmiddle.mvp.presenters.IAuthPresenter;
 import com.nenton.androidmiddle.ui.custom_views.AuthPanel;
 
-public interface IAuthView extends IView{
+public interface IAuthView extends IRootView{
 
     void showLoginBtn();
     void hideLoginBtn();

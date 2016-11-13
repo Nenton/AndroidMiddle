@@ -1,23 +1,35 @@
 package com.nenton.androidmiddle.mvp.presenters;
 
 import com.nenton.androidmiddle.data.storage.ProductDto;
+import com.nenton.androidmiddle.di.DaggerService;
+import com.nenton.androidmiddle.di.sqopes.CatalogScope;
 import com.nenton.androidmiddle.mvp.models.CatalogModel;
 import com.nenton.androidmiddle.mvp.views.ICatalogView;
+import com.nenton.androidmiddle.mvp.views.IRootView;
+import com.nenton.androidmiddle.ui.activities.RootActivity;
 
 import java.util.List;
 
-public class CatalogPresenter extends AbstractPresenter<ICatalogView> implements ICatalogPresenter{
-    private static CatalogPresenter ourInstance = new CatalogPresenter();
+import javax.inject.Inject;
 
-    private CatalogModel mCatalogModel;
+import dagger.Provides;
+
+public class CatalogPresenter extends AbstractPresenter<ICatalogView> implements ICatalogPresenter{
+
+    @Inject
+    RootPresenter mRootPresenter;
+
+    @Inject
+    CatalogModel mCatalogModel;
+
     private List<ProductDto> mProducts;
 
-    public static CatalogPresenter getInstance() {
-        return ourInstance;
+    public CatalogPresenter() {
+        createComponent().inject(this);
     }
 
-    private CatalogPresenter() {
-        mCatalogModel = new CatalogModel();
+    private IRootView getRootView(){
+        return mRootPresenter.getView();
     }
 
     @Override
@@ -36,7 +48,8 @@ public class CatalogPresenter extends AbstractPresenter<ICatalogView> implements
     public void clickOnBuyButton(int position) {
         if (getView()!=null){
             if (checkUserAuth()){
-                getView().showAddToCartMessage(mProducts.get(position));
+                getRootView().showMessage("Товар " + mProducts.get(position).getProductName() + " успешно добавлен в корзину");
+//                getView().showAddToCartMessage(mProducts.get(position));
             } else {
                 getView().showAuthScreen();
             }
@@ -48,4 +61,35 @@ public class CatalogPresenter extends AbstractPresenter<ICatalogView> implements
     public boolean checkUserAuth() {
         return mCatalogModel.isUserAuth();
     }
+
+    //region ========================= DI =========================
+
+    private Component createComponent(){
+        Component component = DaggerService.getComponent(Component.class);
+        if (component == null){
+            component = DaggerCatalogPresenter_Component.builder()
+                    .component(DaggerService.getComponent(RootActivity.Component.class))
+                    .module(new Module())
+                    .build();
+            DaggerService.registerComponent(Component.class, component);
+        }
+        return component;
+    }
+
+    @dagger.Module
+    public class Module{
+        @Provides
+        @CatalogScope
+        CatalogModel provideCatalogModel(){
+            return new CatalogModel();
+        }
+    }
+
+    @dagger.Component(dependencies = RootActivity.Component.class, modules = Module.class)
+    @CatalogScope
+    interface Component{
+        void inject(CatalogPresenter presenter);
+    }
+
+    //endregion
 }

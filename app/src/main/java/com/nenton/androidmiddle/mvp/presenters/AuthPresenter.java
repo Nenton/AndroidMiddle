@@ -1,24 +1,33 @@
 package com.nenton.androidmiddle.mvp.presenters;
 
-
-import android.os.Handler;
-
+import com.nenton.androidmiddle.di.DaggerService;
+import com.nenton.androidmiddle.di.sqopes.AuthScope;
 import com.nenton.androidmiddle.mvp.models.AuthModel;
 import com.nenton.androidmiddle.mvp.views.IAuthView;
 import com.nenton.androidmiddle.ui.custom_views.AuthPanel;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+
+import javax.inject.Inject;
+
+import dagger.Provides;
+
 public class AuthPresenter extends AbstractPresenter<IAuthView> implements IAuthPresenter {
 
-    private static AuthPresenter ourInstance = new AuthPresenter();
-    private AuthModel mAuthModel;
+    @Inject
+    AuthModel mAuthModel;
 
-    private AuthPresenter() {
-        mAuthModel = new AuthModel();
+    public AuthPresenter() {
+        Component component = DaggerService.getComponent(Component.class);
+        if (component == null){
+            component = createAuthPresenterComponent();
+            DaggerService.registerComponent(Component.class, component);
+        }
+        component.inject(this);
     }
 
-    public static AuthPresenter getInstance() {
-        return ourInstance;
-    }
+
 
     @Override
     public void initView() {
@@ -74,16 +83,8 @@ public class AuthPresenter extends AbstractPresenter<IAuthView> implements IAuth
     @Override
     public void clickOnShowCatalog() {
         if (getView() != null) {
-//            mIAuthView.showMessage("CATALOG");
-//            getView().showLoad();
             // TODO: 27.10.2016 if update data complited go to in screen catalog
             getView().showCatalogScreen();
-//            new Handler().postDelayed(new Runnable() {
-//                @Override
-//                public void run() {
-//                    getView().hideLoad();
-//                }
-//            },3000);
         }
     }
 
@@ -91,5 +92,30 @@ public class AuthPresenter extends AbstractPresenter<IAuthView> implements IAuth
     public boolean checkUserAuth() {
         return mAuthModel.isUserAuth();
     }
+
+    //region ========================= DI =========================
+
+    @dagger.Module
+    public class Module{
+        @Provides
+        @AuthScope
+        AuthModel provideAuthModel(){
+            return new AuthModel();
+        }
+    }
+
+    @dagger.Component(modules = AuthPresenter.Module.class)
+    @AuthScope
+    interface Component{
+        void inject(AuthPresenter presenter);
+    }
+
+    private Component createAuthPresenterComponent(){
+        return DaggerAuthPresenter_Component.builder()
+                .module(new Module())
+                .build();
+    }
+
+    //endregion
 
 }

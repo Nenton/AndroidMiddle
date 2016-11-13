@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/activity_root"
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -44,74 +44,12 @@
             android:textSize="40sp"
             custom:font="fonts/PTBebasNeueBook.ttf"/>
 
-        <com.nenton.androidmiddle.ui.custom_views.AuthPanel
-            android:id="@+id/auth_wrap"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/wrap_soc_btn"
-            android:orientation="vertical">
-
-            <android.support.v7.widget.CardView
-                android:id="@+id/auth_card"
-                style="@style/CustomCard.LoginCard"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:visibility="gone"
-                tools:visibility="visible">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <android.support.design.widget.TextInputLayout
-                        android:id="@+id/login_email_TIL"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                        <EditText
-                            android:id="@+id/login_email_et"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint="Введите e-mail"
-                            android:textColor="@color/black"
-                            android:textColorHint="@color/greyLight"
-                            android:textSize="14sp"
-                            android:inputType="textEmailAddress"/>
-                    </android.support.design.widget.TextInputLayout>
-
-                    <android.support.design.widget.TextInputLayout
-                        android:id="@+id/login_password_TIL"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                        <EditText
-                            android:id="@+id/login_password_et"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint="Введите пароль"
-                            android:textColor="@color/black"
-                            android:textColorHint="@color/greyLight"
-                            android:textSize="14sp"
-                            android:inputType="textPassword"/>
-                    </android.support.design.widget.TextInputLayout>
-                </LinearLayout>
-
-            </android.support.v7.widget.CardView>
-
-            <Button
-                android:id="@+id/show_catalog_btn"
-                style="@style/CustomButton"
-                android:text="Смотреть каталог"
-                android:theme="@style/ShowBtn"/>
-
-            <Button
-                android:id="@+id/login_btn"
-                style="@style/CustomButton"
-                android:text="Войти"
-                android:theme="@style/StartBtn"/>
-
-        </com.nenton.androidmiddle.ui.custom_views.AuthPanel>
+            android:layout_above="@+id/wrap_soc_btn">
+            <include layout="@layout/fragment_auth_panel"/>
+        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/wrap_soc_btn"
