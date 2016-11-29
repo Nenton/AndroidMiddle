@@ -27,7 +27,6 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     compile 'com.android.support:design:24.2.1'
-
     compile 'com.android.support:design:24.2.1'
     compile 'com.android.support:appcompat-v7:24.2.1'
     compile 'com.android.support:cardview-v7:24.2.1'
@@ -44,4 +43,7 @@ dependencies {
     testCompile 'junit:junit:4.12'
     apt 'com.jakewharton:butterknife-compiler:8.4.0'
     apt 'com.google.dagger:dagger-compiler:2.7'
+    compile 'de.hdodenhof:circleimageview:2.1.0'
+    compile 'com.squareup.flow:flow:1.0.0-alpha2'
+    compile 'com.squareup.mortar:mortar:0.20'
 }

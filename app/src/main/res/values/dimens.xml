@@ -17,4 +17,7 @@
     <dimen name="font_medium_16">16sp</dimen>
 
     <dimen name="btn_min_width_88">88dp</dimen>
+
+    <dimen name="custom_height">35dp</dimen>
+    <dimen name="custom_height_final">35dp</dimen>
 </resources>

@@ -95,7 +95,7 @@ public class RootActivity extends AppCompatActivity implements IRootView, Naviga
         Fragment fragment = null;
         switch (item.getItemId()) {
             case R.id.nav_account:
-                fragment = new AddressFragment();
+                fragment = new AccountFragment();
                 break;
             case R.id.nav_catalog:
                 fragment = new CatalogFragment();
@@ -205,5 +205,9 @@ public class RootActivity extends AppCompatActivity implements IRootView, Naviga
     }
 
     //endregion
+
+
+
+
 
 }

@@ -51,7 +51,7 @@
         </LinearLayout>
 
 
-        <com.nenton.androidmiddle.ui.custom_views.AuthPanel
+        <LinearLayout
             android:id="@+id/auth_wrap"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -118,7 +118,7 @@
                 android:text="Войти"
                 android:theme="@style/StartBtn"/>
 
-        </com.nenton.androidmiddle.ui.custom_views.AuthPanel>
+        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/wrap_soc_btn"

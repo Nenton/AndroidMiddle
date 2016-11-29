@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.nenton.androidmiddle.ui.custom_views.AuthPanel
+<LinearLayout
     android:id="@+id/auth_wrap"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
@@ -68,4 +68,4 @@
         android:text="Войти"
         android:theme="@style/StartBtn"/>
 
-</com.nenton.androidmiddle.ui.custom_views.AuthPanel>
+</LinearLayout>

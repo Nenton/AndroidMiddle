@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.nenton.androidmiddle.ui.screens.AuthView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:indeterminate="true"
+        android:visibility="gone"
+        tools:visibility="visible"/>
+
+    <ImageView
+        android:id="@+id/logo_img"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="48dp"
+        android:src="@drawable/firebase"/>
+
+    <com.nenton.androidmiddle.ui.custom_views.TextViewCustom
+        android:id="@+id/app_name_txt"
+        xmlns:custom="http://schemas.android.com/apk/res/com.nenton.androidmiddle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/logo_img"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="24dp"
+        android:text="@string/app_name"
+        android:textColor="@color/white"
+        android:textSize="40sp"
+        custom:font="fonts/PTBebasNeueBook.ttf"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/wrap_soc_btn">
+
+        <include layout="@layout/fragment_auth_panel"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/wrap_soc_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingBottom="16dp"
+        android:paddingTop="16dp">
+
+        <ImageButton
+            android:id="@+id/vk_btn"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:background="@drawable/vk_selector_ic"/>
+
+        <ImageButton
+            android:id="@+id/fb_btn"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:background="@drawable/fb_selector_ic"/>
+
+        <ImageButton
+            android:id="@+id/twitter_btn"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:background="@drawable/twitter_selector_ic"/>
+
+    </LinearLayout>
+</com.nenton.androidmiddle.ui.screens.AuthView>

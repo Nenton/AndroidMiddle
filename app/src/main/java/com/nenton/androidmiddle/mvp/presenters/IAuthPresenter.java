@@ -6,13 +6,6 @@ import com.nenton.androidmiddle.mvp.views.IAuthView;
 
 public interface IAuthPresenter {
 
-    void takeView(IAuthView mAuthView);
-    void dropView();
-    void initView();
-
-    @Nullable
-    IAuthView getView();
-
     void clickOnVk();
     void clickOnFb();
     void clickOnTwitter();

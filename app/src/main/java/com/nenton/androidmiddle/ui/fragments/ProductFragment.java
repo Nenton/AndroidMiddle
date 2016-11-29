@@ -191,6 +191,11 @@ public class ProductFragment extends Fragment implements IProductView {
                 .build();
     }
 
+    @Override
+    public boolean viewOnBackPressed() {
+        return false;
+    }
+
     @dagger.Module
     public class Module {
         ProductDto mProductDto;

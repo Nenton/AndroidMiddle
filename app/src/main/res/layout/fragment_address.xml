@@ -1,30 +1,35 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:tools="http://schemas.android.com/tools"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:background="@color/white"
                 android:padding="16dp"
-             tools:context="com.nenton.androidmiddle.ui.fragments.AddressFragment">
+                tools:context="com.nenton.androidmiddle.ui.fragments.AddressFragment">
+
     <Button
         style="@style/CustomButton"
+        android:layout_alignParentBottom="true"
         android:background="@color/colorAccent"
         android:text="Указать на карте"
-        android:textColor="@color/white"
-        android:layout_alignParentBottom="true"/>
+        android:textColor="@color/white"/>
+
     <LinearLayout
         android:id="@+id/place_delivery_wrap"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_vertical">
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
         <ImageView
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_marginRight="16dp"
             android:src="@drawable/vk_selector_ic"/>
+
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -32,22 +37,26 @@
                 android:text="Работа"/>
         </android.support.design.widget.TextInputLayout>
     </LinearLayout>
+
     <LinearLayout
         android:id="@+id/street_place_delivery_wrap"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
+        android:layout_below="@id/place_delivery_wrap"
         android:layout_marginTop="@dimen/spacing_normal_16"
-        android:layout_below="@id/place_delivery_wrap">
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
         <ImageView
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_marginRight="@dimen/spacing_normal_16"
             android:src="@drawable/ic_location_on_black_24dp"/>
+
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -55,42 +64,49 @@
                 android:text="Авиастроителей"/>
         </android.support.design.widget.TextInputLayout>
     </LinearLayout>
+
     <LinearLayout
         android:id="@+id/apartment_wrap"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
+        android:layout_below="@id/street_place_delivery_wrap"
         android:layout_marginTop="@dimen/spacing_normal_16"
-        android:layout_below="@id/street_place_delivery_wrap">
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
         <android.support.design.widget.TextInputLayout
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:layout_marginRight="8dp">
+            android:layout_marginRight="8dp"
+            android:layout_weight="1">
+
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Дом"
                 android:text="28"/>
         </android.support.design.widget.TextInputLayout>
+
         <android.support.design.widget.TextInputLayout
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp">
+            android:layout_marginRight="8dp"
+            android:layout_weight="1">
+
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Квартира"
                 android:text="567"/>
         </android.support.design.widget.TextInputLayout>
+
         <android.support.design.widget.TextInputLayout
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp">
+            android:layout_marginLeft="8dp"
+            android:layout_weight="1">
+
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -103,18 +119,21 @@
         android:id="@+id/comments_wrap"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
+        android:layout_below="@id/apartment_wrap"
         android:layout_marginTop="@dimen/spacing_normal_16"
-        android:layout_below="@id/apartment_wrap">
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Комментарий"
-                android:text="6 этаж"/>
+                android:text="6 этаж"
+                android:id="@+id/editText"/>
         </android.support.design.widget.TextInputLayout>
     </LinearLayout>
 

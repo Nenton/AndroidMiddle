@@ -113,6 +113,11 @@ public class CatalogFragment extends Fragment implements ICatalogView {
         return component;
     }
 
+    @Override
+    public boolean viewOnBackPressed() {
+        return false;
+    }
+
     @dagger.Module
     public class Module{
         @Provides
