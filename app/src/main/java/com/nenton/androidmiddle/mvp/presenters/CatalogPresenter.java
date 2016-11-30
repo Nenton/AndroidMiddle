@@ -68,7 +68,7 @@ public class CatalogPresenter extends AbstractPresenter<ICatalogView> implements
         Component component = DaggerService.getComponent(Component.class);
         if (component == null){
             component = DaggerCatalogPresenter_Component.builder()
-                    .component(DaggerService.getComponent(RootActivity.Component.class))
+                    .component(DaggerService.getComponent(RootActivity.RootComponent.class))
                     .module(new Module())
                     .build();
             DaggerService.registerComponent(Component.class, component);
@@ -85,7 +85,7 @@ public class CatalogPresenter extends AbstractPresenter<ICatalogView> implements
         }
     }
 
-    @dagger.Component(dependencies = RootActivity.Component.class, modules = Module.class)
+    @dagger.Component(dependencies = RootActivity.RootComponent.class, modules = Module.class)
     @CatalogScope
     interface Component{
         void inject(CatalogPresenter presenter);

@@ -21,6 +21,7 @@ import com.nenton.androidmiddle.R;
 import com.nenton.androidmiddle.di.DaggerService;
 import com.nenton.androidmiddle.di.sqopes.AuthScope;
 import com.nenton.androidmiddle.flow.TreeKeyDispatcher;
+import com.nenton.androidmiddle.mortar.ScreenScoper;
 import com.nenton.androidmiddle.mvp.presenters.AuthPresenter;
 import com.nenton.androidmiddle.mvp.presenters.IAuthPresenter;
 import com.nenton.androidmiddle.mvp.presenters.RootPresenter;
@@ -41,6 +42,8 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import dagger.Provides;
 import flow.Flow;
+import mortar.MortarScope;
+import mortar.bundler.BundleServiceRunner;
 
 public class SplashActivity extends AppCompatActivity implements IRootView {
 
@@ -49,7 +52,7 @@ public class SplashActivity extends AppCompatActivity implements IRootView {
     @BindView(R.id.root_frame)
     FrameLayout mRootFrame;
 
-//    @Inject
+    @Inject
     RootPresenter mRootPresenter;
 
     @Override
@@ -65,36 +68,40 @@ public class SplashActivity extends AppCompatActivity implements IRootView {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
+        BundleServiceRunner.getBundleServiceRunner(this).onCreate(savedInstanceState);
         ButterKnife.bind(this);
 
-//        Component component = DaggerService.getComponent(Component.class);
-//        if (component == null){
-//            component = createAuthViewComponent();
-//            DaggerService.registerComponent(Component.class, component);
-//        }
-//        component.inject(this);
-//
-//        mAuthPresenter.takeView(this);
-//        mAuthPresenter.initView();
+        DaggerService.<RootActivity.RootComponent>getDaggerComponent(this).inject(this);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        BundleServiceRunner.getBundleServiceRunner(this).onSaveInstanceState(outState);
+    }
+
+    @Override
+    public Object getSystemService(String name) {
+        MortarScope rootActivityScope = MortarScope.findChild(getApplicationContext(), RootActivity.class.getName());
+        return rootActivityScope.hasService(name) ? rootActivityScope.getService(name) : super.getSystemService(name);
     }
 
     @Override
     protected void onResume() {
-//        mRootPresenter.takeView(this);
+        mRootPresenter.takeView(this);
         super.onResume();
     }
 
     @Override
     protected void onPause() {
-//        mRootPresenter.dropView();
+        mRootPresenter.dropView();
         super.onPause();
     }
 
     @Override
     protected void onDestroy() {
-        mAuthPresenter.dropView();
         if (isFinishing()){
-//            DaggerService.unregisterScope(AuthScope.class);
+            ScreenScoper.destroyScreenScope(AuthScreen.class.getName());
         }
         super.onDestroy();
     }
@@ -119,23 +126,23 @@ public class SplashActivity extends AppCompatActivity implements IRootView {
 
     @Override
     public void showLoad() {
-        mProgressBar.setVisibility(View.VISIBLE);
-        mLoginBtn.setEnabled(false);
-        mCatalogBtn.setEnabled(false);
-        for (ImageButton imageButton : mImageButtons) {
-            imageButton.setEnabled(false);
-        }
+//        mProgressBar.setVisibility(View.VISIBLE);
+//        mLoginBtn.setEnabled(false);
+//        mCatalogBtn.setEnabled(false);
+//        for (ImageButton imageButton : mImageButtons) {
+//            imageButton.setEnabled(false);
+//        }
         // TODO: 21.10.2016 show load animation
     }
 
     @Override
     public void hideLoad() {
-        mProgressBar.setVisibility(View.GONE);
-        mLoginBtn.setEnabled(true);
-        mCatalogBtn.setEnabled(true);
-        for (ImageButton imageButton : mImageButtons) {
-            imageButton.setEnabled(true);
-        }
+//        mProgressBar.setVisibility(View.GONE);
+//        mLoginBtn.setEnabled(true);
+//        mCatalogBtn.setEnabled(true);
+//        for (ImageButton imageButton : mImageButtons) {
+//            imageButton.setEnabled(true);
+//        }
 // TODO: 21.10.2016 hide load animation
     }
 
@@ -152,11 +159,6 @@ public class SplashActivity extends AppCompatActivity implements IRootView {
         if (getCurrentScreen() != null && !getCurrentScreen().viewOnBackPressed() && !Flow.get(this).goBack()){
             super.onBackPressed();
         }
-//        if (mAuthPanel.getCustomState() == AuthPanel.LOGIN_STATE) {
-//            mAuthPanel.setCustomState(AuthPanel.IDLE_STATE);
-//        } else {
-//            super.onBackPressed();
-//        }
     }
 
     public void startRootActivity(){

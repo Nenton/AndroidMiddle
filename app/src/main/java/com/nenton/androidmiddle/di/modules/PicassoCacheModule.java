@@ -3,6 +3,7 @@ package com.nenton.androidmiddle.di.modules;
 import android.content.Context;
 
 import com.jakewharton.picasso.OkHttp3Downloader;
+import com.nenton.androidmiddle.di.sqopes.RootScope;
 import com.squareup.picasso.Picasso;
 
 import javax.inject.Singleton;
@@ -14,7 +15,7 @@ import dagger.Provides;
 public class PicassoCacheModule {
 
     @Provides
-    @Singleton
+    @RootScope
     Picasso providePicasso(Context context) {
         OkHttp3Downloader okHttp3Downloader = new OkHttp3Downloader(context);
         Picasso picasso = new Picasso.Builder(context)

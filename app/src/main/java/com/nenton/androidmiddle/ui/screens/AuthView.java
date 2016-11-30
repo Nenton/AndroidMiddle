@@ -15,6 +15,7 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
 import com.nenton.androidmiddle.R;
+import com.nenton.androidmiddle.di.DaggerService;
 import com.nenton.androidmiddle.mvp.presenters.AuthPresenter;
 import com.nenton.androidmiddle.mvp.views.IAuthView;
 import com.nenton.androidmiddle.ui.custom_views.AuthPanel;
@@ -64,8 +65,8 @@ public class AuthView extends RelativeLayout implements IAuthView {
         super(context, attrs);
         if (!isInEditMode()) {
             mAuthScreen = Flow.getKey(this);
+            DaggerService.<AuthScreen.Component>getDaggerComponent(context).inject(this);
         }
-        // TODO: 27.11.2016 getMScreen and dagger component
     }
 
     @Override

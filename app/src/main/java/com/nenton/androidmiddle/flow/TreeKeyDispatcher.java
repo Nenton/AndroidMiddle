@@ -10,7 +10,7 @@ import android.view.View;
 import android.widget.FrameLayout;
 
 import com.nenton.androidmiddle.R;
-import com.nenton.androidmiddle.ui.activities.SplashActivity;
+import com.nenton.androidmiddle.mortar.ScreenScoper;
 
 import java.util.Collections;
 import java.util.Map;
@@ -23,7 +23,7 @@ import flow.Traversal;
 import flow.TraversalCallback;
 import flow.TreeKey;
 
-public class TreeKeyDispatcher implements KeyChanger, Dispatcher{
+public class TreeKeyDispatcher implements KeyChanger, Dispatcher {
 
     private Activity mActivity;
     private Object inKey;
@@ -45,18 +45,18 @@ public class TreeKeyDispatcher implements KeyChanger, Dispatcher{
 
         mRootFrame = (FrameLayout) mActivity.findViewById(R.id.root_frame);
 
-        if (inKey.equals(outKey)){
+        if (inKey.equals(outKey)) {
             callback.onTraversalCompleted();
             return;
         }
 
-        if (inKey instanceof TreeKey){
+        if (inKey instanceof TreeKey) {
             // TODO: 27.11.2016 implement treeKey case
         }
-        // TODO: 27.11.2016 create mortar context for screen
         Context flowContext = traversal.createContext(inKey, mActivity);
-        contexts = Collections.singletonMap(inKey, flowContext);
-        changeKey(outState,inState,traversal.direction,contexts,callback);
+        Context mortarContext = ScreenScoper.getScreenScope((AbstractScreen) inKey).createContext(flowContext);
+        contexts = Collections.singletonMap(inKey, mortarContext);
+        changeKey(outState, inState, traversal.direction, contexts, callback);
     }
 
     @Override
@@ -65,7 +65,7 @@ public class TreeKeyDispatcher implements KeyChanger, Dispatcher{
 
         //save prev View
 
-        if (outgoingState != null){
+        if (outgoingState != null) {
             outgoingState.save(mRootFrame.getChildAt(0));
         }
 
@@ -73,18 +73,21 @@ public class TreeKeyDispatcher implements KeyChanger, Dispatcher{
 
         Screen screen;
         screen = inKey.getClass().getAnnotation(Screen.class);
-        if (screen == null){
+        if (screen == null) {
             throw new IllegalStateException("@Screen annotation is missing on screen " + ((AbstractScreen) inKey).getScopeName());
         } else {
             int layout = screen.value();
 
             LayoutInflater inflater = LayoutInflater.from(context);
             View newView = inflater.inflate(layout, mRootFrame, false);
-// TODO: 27.11.2016 unregister screen
             // restore state to new view
             incomingState.restore(newView);
 
-            if (mRootFrame.getChildAt(0) != null){
+            if ((outKey)!=null){
+                ((AbstractScreen)outKey).unregisterscope();
+            }
+
+            if (mRootFrame.getChildAt(0) != null) {
                 mRootFrame.removeView(mRootFrame.getChildAt(0));
             }
 

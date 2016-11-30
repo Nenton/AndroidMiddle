@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import com.nenton.androidmiddle.data.network.RestService;
 import com.nenton.androidmiddle.data.storage.ProductDto;
 import com.nenton.androidmiddle.di.DaggerService;
+
 import com.nenton.androidmiddle.di.components.DaggerDataManagerComponent;
 import com.nenton.androidmiddle.di.components.DataManagerComponent;
 import com.nenton.androidmiddle.di.modules.LocalModule;
