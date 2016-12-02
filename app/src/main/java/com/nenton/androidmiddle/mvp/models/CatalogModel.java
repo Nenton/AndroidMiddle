@@ -15,6 +15,14 @@ public class CatalogModel extends AbstractModel{
     }
 
     public boolean isUserAuth(){
-        return mDataManager.isUserAuth();
+        return false;//mDataManager.isUserAuth();
+    }
+
+    public ProductDto getProductById(int productId){
+        return mDataManager.getProductById(productId);
+    }
+
+    public void updateProduct(ProductDto product){
+        mDataManager.updateProduct(product);
     }
 }

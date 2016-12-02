@@ -23,7 +23,7 @@ import flow.Traversal;
 import flow.TraversalCallback;
 import flow.TreeKey;
 
-public class TreeKeyDispatcher implements KeyChanger, Dispatcher {
+public class TreeKeyDispatcher extends KeyChanger implements Dispatcher {
 
     private Activity mActivity;
     private Object inKey;

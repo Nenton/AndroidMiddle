@@ -12,7 +12,7 @@ import com.nenton.androidmiddle.di.modules.AppModule;
 import com.nenton.androidmiddle.di.modules.PicassoCacheModule;
 import com.nenton.androidmiddle.di.modules.RootModule;
 import com.nenton.androidmiddle.mortar.ScreenScoper;
-import com.nenton.androidmiddle.ui.activities.DaggerRootActivity_Root_Component;
+import com.nenton.androidmiddle.ui.activities.DaggerRootActivity_RootComponent;
 import com.nenton.androidmiddle.ui.activities.RootActivity;
 
 import mortar.MortarScope;
@@ -47,6 +47,7 @@ public class AndroidMiddleAplication extends Application {
         mMortarScope = MortarScope.buildRootScope()
                 .withService(DaggerService.SERVICE_NAME, sAppComponent)
                 .build("Root");
+
         mRootActivityScope = mMortarScope.buildChild()
                 .withService(DaggerService.SERVICE_NAME, mRootActivityRootComponent)
                 .withService(BundleServiceRunner.SERVICE_NAME, new BundleServiceRunner())
@@ -57,7 +58,7 @@ public class AndroidMiddleAplication extends Application {
     }
 
     private void createRootActivityComponent() {
-        mRootActivityRootComponent = DaggerRootActivity_Root_Component.builder()
+        mRootActivityRootComponent = DaggerRootActivity_RootComponent.builder()
                 .appComponent(sAppComponent)
                 .rootModule(new RootModule())
                 .picassoCacheModule(new PicassoCacheModule())

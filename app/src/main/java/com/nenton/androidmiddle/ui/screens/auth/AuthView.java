@@ -1,8 +1,6 @@
-package com.nenton.androidmiddle.ui.screens;
+package com.nenton.androidmiddle.ui.screens.auth;
 
 import android.content.Context;
-import android.support.annotation.Nullable;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.widget.CardView;
 import android.util.AttributeSet;
 import android.view.View;
@@ -16,9 +14,7 @@ import android.widget.RelativeLayout;
 
 import com.nenton.androidmiddle.R;
 import com.nenton.androidmiddle.di.DaggerService;
-import com.nenton.androidmiddle.mvp.presenters.AuthPresenter;
 import com.nenton.androidmiddle.mvp.views.IAuthView;
-import com.nenton.androidmiddle.ui.custom_views.AuthPanel;
 
 import java.util.List;
 
@@ -36,7 +32,7 @@ public class AuthView extends RelativeLayout implements IAuthView {
     public static final int IDLE_STATE = 1;
 
     @Inject
-    AuthPresenter mAuthPresenter;
+    AuthScreen.AuthPresenter mAuthPresenter;
 
     @BindViews({R.id.vk_btn, R.id.fb_btn, R.id.twitter_btn})
     List<ImageButton> mImageButtons;
@@ -69,14 +65,6 @@ public class AuthView extends RelativeLayout implements IAuthView {
         }
     }
 
-    @Override
-    protected void onFinishInflate() {
-        super.onFinishInflate();
-        ButterKnife.bind(this);
-        if (!isInEditMode()) {
-            showViewFromState();
-        }
-    }
 
     private void showViewFromState() {
         if (mAuthScreen.getCustomState() == LOGIN_STATE) {
@@ -109,6 +97,16 @@ public class AuthView extends RelativeLayout implements IAuthView {
     }
 
     @Override
+    protected void onFinishInflate() {
+        super.onFinishInflate();
+        ButterKnife.bind(this);
+        if (!isInEditMode()) {
+            showViewFromState();
+        }
+    }
+
+
+    @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
         if (isInEditMode()) {
@@ -120,7 +118,7 @@ public class AuthView extends RelativeLayout implements IAuthView {
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
         if (isInEditMode()) {
-            mAuthPresenter.dropView();
+            mAuthPresenter.dropView(this);
         }
     }
 

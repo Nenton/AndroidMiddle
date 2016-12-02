@@ -1,4 +1,4 @@
-package com.nenton.androidmiddle.ui.screens;
+package com.nenton.androidmiddle.ui.screens.auth;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -13,6 +13,7 @@ import com.nenton.androidmiddle.mvp.presenters.IAuthPresenter;
 import com.nenton.androidmiddle.mvp.presenters.RootPresenter;
 import com.nenton.androidmiddle.mvp.views.IRootView;
 import com.nenton.androidmiddle.ui.activities.RootActivity;
+import com.nenton.androidmiddle.ui.activities.SplashActivity;
 
 import javax.inject.Inject;
 
@@ -28,11 +29,10 @@ public class AuthScreen extends AbstractScreen<RootActivity.RootComponent> {
 
     @Override
     public Object createScreenComponent(RootActivity.RootComponent parentRootComponent) {
-//        return DaggerAuthScreen_Component.builder()
-//                .component(parentRootComponent)
-//                .module(new Module())
-//                .build();
-        return null;
+        return DaggerAuthScreen_Component.builder()
+                .rootComponent(parentRootComponent)
+                .module(new Module())
+                .build();
     }
 
     public int getCustomState() {
@@ -65,7 +65,7 @@ public class AuthScreen extends AbstractScreen<RootActivity.RootComponent> {
     public interface Component{
         void inject(AuthPresenter presenter);
 
-        //void inject(AuthView view);
+        void inject(AuthView view);
     }
 
     //endregion
@@ -146,7 +146,12 @@ public class AuthScreen extends AbstractScreen<RootActivity.RootComponent> {
         @Override
         public void clickOnShowCatalog() {
             if (getView() != null) {
-                // TODO: 27.11.2016 start RootActivity
+                getRootView().showMessage("Показать каталог");
+                if (getRootView() instanceof SplashActivity){
+                    ((SplashActivity) getRootView()).startRootActivity();
+                } else {
+                    // TODO: 01.12.2016 show catalog screen
+                }
             }
         }
 

@@ -19,7 +19,7 @@ public class ScreenScoper {
     private static Map<String, MortarScope> sScopeMap = new HashMap<>();
 
     public static MortarScope getScreenScope(AbstractScreen screen){
-        if (sScopeMap.containsKey(screen.getScopeName())){
+        if (!sScopeMap.containsKey(screen.getScopeName())){
             Log.e(TAG," getScreenScope: create new scope");
             return createScreenScope(screen);
         } else {

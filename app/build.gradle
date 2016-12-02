@@ -44,6 +44,6 @@ dependencies {
     apt 'com.jakewharton:butterknife-compiler:8.4.0'
     apt 'com.google.dagger:dagger-compiler:2.7'
     compile 'de.hdodenhof:circleimageview:2.1.0'
-    compile 'com.squareup.flow:flow:1.0.0-alpha2'
+    compile 'com.squareup.flow:flow:1.0.0-alpha'
     compile 'com.squareup.mortar:mortar:0.20'
 }

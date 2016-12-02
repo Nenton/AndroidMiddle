@@ -7,40 +7,23 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.widget.Button;
 import android.widget.FrameLayout;
-import android.widget.ImageButton;
-import android.widget.ProgressBar;
 
 import com.nenton.androidmiddle.BuildConfig;
 import com.nenton.androidmiddle.R;
 
 import com.nenton.androidmiddle.di.DaggerService;
-import com.nenton.androidmiddle.di.sqopes.AuthScope;
 import com.nenton.androidmiddle.flow.TreeKeyDispatcher;
 import com.nenton.androidmiddle.mortar.ScreenScoper;
-import com.nenton.androidmiddle.mvp.presenters.AuthPresenter;
-import com.nenton.androidmiddle.mvp.presenters.IAuthPresenter;
 import com.nenton.androidmiddle.mvp.presenters.RootPresenter;
-import com.nenton.androidmiddle.mvp.views.IAuthView;
 import com.nenton.androidmiddle.mvp.views.IRootView;
 import com.nenton.androidmiddle.mvp.views.IView;
-import com.nenton.androidmiddle.ui.custom_views.AuthPanel;
-import com.nenton.androidmiddle.ui.screens.AuthScreen;
-
-import java.util.List;
+import com.nenton.androidmiddle.ui.screens.auth.AuthScreen;
 
 import javax.inject.Inject;
-import javax.inject.Singleton;
 
 import butterknife.BindView;
-import butterknife.BindViews;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
-import dagger.Provides;
 import flow.Flow;
 import mortar.MortarScope;
 import mortar.bundler.BundleServiceRunner;
@@ -67,8 +50,8 @@ public class SplashActivity extends AppCompatActivity implements IRootView {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_splash);
         BundleServiceRunner.getBundleServiceRunner(this).onCreate(savedInstanceState);
+        setContentView(R.layout.activity_splash);
         ButterKnife.bind(this);
 
         DaggerService.<RootActivity.RootComponent>getDaggerComponent(this).inject(this);

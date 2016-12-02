@@ -1,19 +1,15 @@
 package com.nenton.androidmiddle.ui.activities;
 
-import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
@@ -30,10 +26,8 @@ import com.nenton.androidmiddle.flow.TreeKeyDispatcher;
 import com.nenton.androidmiddle.mvp.presenters.RootPresenter;
 import com.nenton.androidmiddle.mvp.views.IRootView;
 import com.nenton.androidmiddle.mvp.views.IView;
-import com.nenton.androidmiddle.ui.fragments.AccountFragment;
 
-import com.nenton.androidmiddle.ui.fragments.CatalogFragment;
-import com.nenton.androidmiddle.ui.screens.AuthScreen;
+import com.nenton.androidmiddle.ui.screens.catalog.CatalogScreen;
 import com.squareup.picasso.Picasso;
 
 import javax.inject.Inject;
@@ -55,7 +49,7 @@ public class RootActivity extends AppCompatActivity implements IRootView, Naviga
     @BindView(R.id.root_toolbar)
     Toolbar mToolbar;
     @BindView(R.id.root_frame)
-    FrameLayout mFragmentContainer;
+    FrameLayout mFrameContainer;
 
     @Inject
     RootPresenter mRootPresenter;
@@ -63,7 +57,7 @@ public class RootActivity extends AppCompatActivity implements IRootView, Naviga
     @Override
     protected void attachBaseContext(Context newBase) {
         newBase = Flow.configure(newBase,this)
-                .defaultKey(new AuthScreen())
+                .defaultKey(new CatalogScreen())
                 .dispatcher(new TreeKeyDispatcher(this))
                 .install();
         super.attachBaseContext(newBase);
@@ -167,7 +161,7 @@ public class RootActivity extends AppCompatActivity implements IRootView, Naviga
     @Nullable
     @Override
     public IView getCurrentScreen() {
-        return null;
+        return (IView) mFrameContainer.getChildAt(0);
     }
 
     //endregion
