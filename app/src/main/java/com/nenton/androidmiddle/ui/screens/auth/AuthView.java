@@ -109,7 +109,7 @@ public class AuthView extends RelativeLayout implements IAuthView {
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
-        if (isInEditMode()) {
+        if (!isInEditMode()) {
             mAuthPresenter.takeView(this);
         }
     }
@@ -117,7 +117,7 @@ public class AuthView extends RelativeLayout implements IAuthView {
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-        if (isInEditMode()) {
+        if (!isInEditMode()) {
             mAuthPresenter.dropView(this);
         }
     }

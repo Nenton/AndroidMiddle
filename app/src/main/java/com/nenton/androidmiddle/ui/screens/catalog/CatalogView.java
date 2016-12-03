@@ -35,7 +35,7 @@ public class CatalogView extends RelativeLayout implements ICatalogView{
 
     public CatalogView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        if (isInEditMode()){
+        if (!isInEditMode()){
             DaggerService.<CatalogScreen.Component>getDaggerComponent(context).inject(this);
         }
     }
@@ -58,7 +58,7 @@ public class CatalogView extends RelativeLayout implements ICatalogView{
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
-        if (isInEditMode()) {
+        if (!isInEditMode()) {
             mCatalogPresenter.takeView(this);
         }
     }
@@ -66,7 +66,7 @@ public class CatalogView extends RelativeLayout implements ICatalogView{
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-        if (isInEditMode()) {
+        if (!isInEditMode()) {
             mCatalogPresenter.dropView(this);
         }
     }
