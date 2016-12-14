@@ -7,6 +7,8 @@ public interface IAccountView extends IView{
 
     void showPreviewState();
 
+    void showPhotoSourceDialog();
+
     String getUserName();
     String getUserPhone();
 }
