@@ -86,7 +86,7 @@ public class CatalogScreen extends AbstractScreen<RootActivity.RootComponent> {
         protected void onLoad(Bundle savedInstanceState) {
             super.onLoad(savedInstanceState);
             if (getView()!=null){
-                //getView().showCatalogView(mCatalogModel.getProductList());
+                getView().showCatalogView(mCatalogModel.getProductList());
             }
         }
 

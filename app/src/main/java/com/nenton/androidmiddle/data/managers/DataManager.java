@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 
 import com.nenton.androidmiddle.data.network.RestService;
 import com.nenton.androidmiddle.data.storage.ProductDto;
+import com.nenton.androidmiddle.data.storage.UserAddressDto;
 import com.nenton.androidmiddle.di.DaggerService;
 
 import com.nenton.androidmiddle.di.components.DaggerDataManagerComponent;
@@ -15,7 +16,9 @@ import com.nenton.androidmiddle.utils.AndroidMiddleAplication;
 import com.nenton.androidmiddle.utils.Constants;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -29,6 +32,10 @@ public class DataManager {
     private List<ProductDto> mProductDto;
 
     private boolean mUserAuth;
+
+    public PreferencesManager getPreferencesManager() {
+        return mPreferencesManager;
+    }
 
     public DataManager() {
         DataManagerComponent component = DaggerService.getComponent(DataManagerComponent.class);
@@ -90,5 +97,43 @@ public class DataManager {
     public boolean isUserAuth() {
         // TODO: 30.10.2016 auth user 
         return mUserAuth;
+    }
+
+    public Map<String, String> getUserProfileInfo() {
+        Map<String, String> profileInfo = new HashMap<>();
+        profileInfo.put(PreferencesManager.PROFILE_FULL_NAME_KEY, getPreferencesManager().getSharedPreferences().getString(PreferencesManager.PROFILE_FULL_NAME_KEY,"No name"));
+        profileInfo.put(PreferencesManager.PROFILE_PHONE_KEY, getPreferencesManager().getSharedPreferences().getString(PreferencesManager.PROFILE_PHONE_KEY,""));
+        return profileInfo;
+    }
+
+    public ArrayList<UserAddressDto> getUserAddresses() {
+        ArrayList<UserAddressDto> mUserAddresses = new ArrayList<>();
+        mUserAddresses.add(new UserAddressDto(1,"Дом","Жукова", "58", "1234", 4, "После 17.00"));
+        mUserAddresses.add(new UserAddressDto(2,"Работа","Жукова", "58", "1234", 4, "После 17.00"));
+        return mUserAddresses;
+    }
+
+    public Map<String, Boolean> getUserSettings() {
+        Map<String, Boolean> userSettings = new HashMap<>();
+        userSettings.put(PreferencesManager.NOTIFICATION_PROMO_KEY, getPreferencesManager().getSharedPreferences().getBoolean(PreferencesManager.NOTIFICATION_PROMO_KEY, false));
+        userSettings.put(PreferencesManager.NOTIFICATION_ORDER_KEY, getPreferencesManager().getSharedPreferences().getBoolean(PreferencesManager.NOTIFICATION_ORDER_KEY, false));
+        return userSettings;
+    }
+
+    public void saveProfileInfo(String name, String phone) {
+        SharedPreferences.Editor editor = getPreferencesManager().getSharedPreferences().edit();
+        editor.putString(PreferencesManager.PROFILE_FULL_NAME_KEY, name);
+        editor.putString(PreferencesManager.PROFILE_PHONE_KEY, phone);
+        editor.apply();
+    }
+
+    public void saveSetting(String notificationKey, boolean isChecked) {
+        SharedPreferences.Editor editor = getPreferencesManager().getSharedPreferences().edit();
+        editor.putBoolean(notificationKey, isChecked);
+        editor.apply();
+    }
+
+    public void addAddress(UserAddressDto userAddressDto) {
+
     }
 }

@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 
 import com.nenton.androidmiddle.R;
 import com.nenton.androidmiddle.data.storage.ProductDto;
+import com.nenton.androidmiddle.flow.AbstractScreen;
+import com.nenton.androidmiddle.mortar.ScreenScoper;
 import com.nenton.androidmiddle.ui.screens.catalog.CatalogScreen;
 
 import java.util.ArrayList;
@@ -45,8 +47,7 @@ public class CatalogAdapter extends PagerAdapter {
     public Object instantiateItem(ViewGroup container, int position) {
         ProductDto productDto = mProducts.get(position);
         Context productContext = CatalogScreen.Factory.createProductContext(productDto, container.getContext());
-        // TODO: 02.12.2016 create mortar context for product screen
-        View newView = LayoutInflater.from(productContext).inflate(R.layout.screen_catalog, container, false);
+        View newView = LayoutInflater.from(productContext).inflate(R.layout.screen_product, container, false);
         container.addView(newView);
         return newView;
     }

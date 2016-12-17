@@ -27,6 +27,7 @@ import com.nenton.androidmiddle.mvp.presenters.RootPresenter;
 import com.nenton.androidmiddle.mvp.views.IRootView;
 import com.nenton.androidmiddle.mvp.views.IView;
 
+import com.nenton.androidmiddle.ui.screens.account.AccountScreen;
 import com.nenton.androidmiddle.ui.screens.catalog.CatalogScreen;
 import com.squareup.picasso.Picasso;
 
@@ -110,10 +111,13 @@ public class RootActivity extends AppCompatActivity implements IRootView, Naviga
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
+        Object key = null;
         switch (item.getItemId()) {
             case R.id.nav_account:
+                key = new AccountScreen();
                 break;
             case R.id.nav_catalog:
+                key = new CatalogScreen();
                 break;
             case R.id.nav_favorites:
                 break;
@@ -121,6 +125,10 @@ public class RootActivity extends AppCompatActivity implements IRootView, Naviga
                 break;
             case R.id.nav_notifications:
                 break;
+        }
+
+        if (key != null){
+            Flow.get(this).set(key);
         }
 
         mDrawerLayout.closeDrawer(GravityCompat.START);

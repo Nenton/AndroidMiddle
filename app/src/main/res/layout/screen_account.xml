@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.nenton.androidmiddle.ui.screens.account.AccountView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -9,7 +10,7 @@
         android:layout_height="@dimen/spacing_big_48"
         android:background="@color/colorAccent"
         app:layout_anchor="@+id/account_user_profile_photo"
-        app:layout_anchorGravity="bottom" />
+        app:layout_anchorGravity="bottom"/>
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appbar_account"
@@ -34,7 +35,7 @@
                 android:fontFamily="@string/roboto_regular"
                 android:text="Сусев Сергей"
                 android:textColor="@color/white"
-                android:textSize="32sp" />
+                android:textSize="32sp"/>
         </android.support.design.widget.CollapsingToolbarLayout>
     </android.support.design.widget.AppBarLayout>
 
@@ -65,7 +66,7 @@
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:layout_marginRight="16dp"
-                    android:src="@drawable/ic_call_24dp" />
+                    android:src="@drawable/ic_call_24dp"/>
 
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
@@ -76,7 +77,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="Имя пользователя"
-                        android:text="фамилия имя" />
+                        android:text="фамилия имя"/>
 
                 </android.support.design.widget.TextInputLayout>
             </LinearLayout>
@@ -94,7 +95,7 @@
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:layout_marginRight="16dp"
-                    android:src="@drawable/ic_call_24dp" />
+                    android:src="@drawable/ic_call_24dp"/>
 
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
@@ -104,62 +105,59 @@
                         android:id="@+id/user_phone_et"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:enabled="false"
-                        android:focusable="false"
                         android:hint="Телефон"
                         android:inputType="phone"
-                        android:text="+7-123-456-78-90" />
+                        android:text="+7-123-456-78-90"/>
                 </android.support.design.widget.TextInputLayout>
             </LinearLayout>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/greyLight" />
+                android:background="@color/greyLight"/>
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Адресса доставки" />
+                android:text="Адресса доставки"/>
 
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/address_list"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="gone" />
+                android:visibility="gone"/>
 
             <Button
-                style="@style/CustomButton"
                 android:id="@+id/add_address_btn"
+                style="@style/CustomButton"
                 android:layout_marginBottom="@dimen/spacing_normal_16"
                 android:layout_marginTop="@dimen/spacing_small_8"
                 android:background="@color/colorAccent"
-                android:text="Добавить адресс" />
+                android:text="Добавить адресс"/>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/greyLight" />
+                android:background="@color/greyLight"/>
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/spacing_small_8"
-                android:text="Push-уведомления" />
+                android:text="Push-уведомления"/>
 
             <android.support.v7.widget.SwitchCompat
                 android:id="@+id/notification_order_sw"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1" />
+                android:text="Уведомлять об акциях и спец предложениях"/>
 
             <android.support.v7.widget.SwitchCompat
                 android:id="@+id/notification_promo_sw"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Уведомлять об акциях и спец предложениях" />
+                android:text="Уведомлять об акциях и спец предложениях"/>
 
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
@@ -173,6 +171,6 @@
         android:src="@drawable/firebase"
         app:civ_border_color="@android:color/white"
         app:civ_border_width="2dp"
-        app:layout_behavior=".utils.Behavior" />
+        app:layout_behavior=".utils.Behavior"/>
 
-</android.support.design.widget.CoordinatorLayout>
+</com.nenton.androidmiddle.ui.screens.account.AccountView>

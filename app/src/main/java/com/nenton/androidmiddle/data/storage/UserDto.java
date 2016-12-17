@@ -3,7 +3,10 @@ package com.nenton.androidmiddle.data.storage;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.nenton.androidmiddle.data.managers.PreferencesManager;
+
 import java.util.ArrayList;
+import java.util.Map;
 
 public class UserDto implements Parcelable {
     private int id;
@@ -22,6 +25,15 @@ public class UserDto implements Parcelable {
         orderNotification = in.readByte() != 0;
         promoNotification = in.readByte() != 0;
         userAddresses = in.createTypedArrayList(UserAddressDto.CREATOR);
+    }
+
+    public UserDto(Map<String, String> userProfileInfo, ArrayList<UserAddressDto> userAddresses, Map<String, Boolean> userSettings) {
+        this.fullname = userProfileInfo.get(PreferencesManager.PROFILE_FULL_NAME_KEY);
+        this.avatar = userProfileInfo.get(PreferencesManager.PROFILE_AVATAR_KEY);
+        this.phone = userProfileInfo.get(PreferencesManager.PROFILE_PHONE_KEY);
+        this.orderNotification = userSettings.get(PreferencesManager.NOTIFICATION_ORDER_KEY);
+        this.promoNotification = userSettings.get(PreferencesManager.NOTIFICATION_PROMO_KEY);
+        this.userAddresses = userAddresses;
     }
 
     public static final Creator<UserDto> CREATOR = new Creator<UserDto>() {

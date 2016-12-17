@@ -1,7 +1,9 @@
 package com.nenton.androidmiddle.ui.screens.account;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.support.design.widget.CoordinatorLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SwitchCompat;
@@ -16,6 +18,7 @@ import android.widget.TextView;
 
 import com.nenton.androidmiddle.R;
 import com.nenton.androidmiddle.data.storage.UserDto;
+import com.nenton.androidmiddle.di.DaggerService;
 import com.nenton.androidmiddle.mvp.views.IAccountView;
 import com.squareup.picasso.Picasso;
 
@@ -23,7 +26,9 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import de.hdodenhof.circleimageview.CircleImageView;
+import flow.Flow;
 
 public class AccountView extends CoordinatorLayout implements IAccountView {
 
@@ -32,28 +37,21 @@ public class AccountView extends CoordinatorLayout implements IAccountView {
 
     @Inject
     AccountScreen.AccountPresenter mPresenter;
-
     @Inject
     Picasso mPicasso;
 
     @BindView(R.id.profile_name_txt)
     TextView mProfileNameTxt;
-
     @BindView(R.id.user_avatar_img)
     CircleImageView mUserAvatar;
-
     @BindView(R.id.user_phone_et)
     EditText mUserPhoneET;
-
     @BindView(R.id.user_full_name_et)
     EditText mUserFullNameET;
-
     @BindView(R.id.profile_name_wrapper)
     LinearLayout mProfileNameWrapper;
-
     @BindView(R.id.address_list)
     RecyclerView mAddressList;
-
     @BindView(R.id.add_address_btn)
     Button mAddAdressBtn;
     @BindView(R.id.notification_order_sw)
@@ -68,15 +66,17 @@ public class AccountView extends CoordinatorLayout implements IAccountView {
 
     public AccountView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        if (!isInEditMode()) {
+            mAccountScreen = Flow.getKey(this);
+            DaggerService.<AccountScreen.Component>getDaggerComponent(context).inject(this);
+        }
     }
 
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
         ButterKnife.bind(this);
-        if (!isInEditMode()) {
 
-        }
     }
 
     private void showViewFromState() {
@@ -87,8 +87,7 @@ public class AccountView extends CoordinatorLayout implements IAccountView {
         }
 
     }
-
-
+    
     @Override
     public void onAttachedToWindow() {
         super.onAttachedToWindow();
@@ -199,7 +198,26 @@ public class AccountView extends CoordinatorLayout implements IAccountView {
 
     @Override
     public void showPhotoSourceDialog() {
-
+        String source[] = {"Загрузить из галпереи","Сделать фото","Отмена"};
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext());
+        alertDialog.setTitle("Установить фото");
+        alertDialog.setItems(source, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                switch (which){
+                    case 0 :
+                        mPresenter.chooseGallery();
+                        break;
+                    case 1 :
+                        mPresenter.chooseCamera();
+                        break;
+                    case 2 :
+                        dialog.cancel();
+                        break;
+                }
+            }
+        });
+        alertDialog.show();
     }
 
     @Override
@@ -220,6 +238,22 @@ public class AccountView extends CoordinatorLayout implements IAccountView {
         } else {
             return false;
         }
+    }
+
+    //endregion
+
+    //region ========================= Event =========================
+
+    // TODO: 13.12.2016 delete adress item (swipe)
+
+    @OnClick(R.id.account_user_profile_photo)
+    void testEditMode(){
+        mPresenter.switchViewState();
+    }
+
+    @OnClick(R.id.add_address_btn)
+    void clickAddAddress(){
+        mPresenter.clickOnAddress();
     }
 
     //endregion

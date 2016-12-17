@@ -76,7 +76,7 @@ public class ProductView extends LinearLayout implements IProductView{
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
-        if (isInEditMode()) {
+        if (!isInEditMode()) {
             mProductPresenter.takeView(this);
         }
     }
@@ -84,7 +84,7 @@ public class ProductView extends LinearLayout implements IProductView{
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-        if (isInEditMode()) {
+        if (!isInEditMode()) {
             mProductPresenter.dropView(this);
         }
     }
