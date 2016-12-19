@@ -21,6 +21,8 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <string name="image_view" translatable="false">android.widget.RelativeLayout</string>
+    <string name="account_remove">Удалить</string>
+    <string name="account_edit">Редактировать</string>
 
 
 </resources>

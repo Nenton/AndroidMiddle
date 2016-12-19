@@ -22,6 +22,8 @@ import java.util.Map;
 
 import javax.inject.Inject;
 
+import static com.nenton.androidmiddle.data.managers.PreferencesManager.*;
+
 public class DataManager {
 
     @Inject
@@ -88,10 +90,6 @@ public class DataManager {
         mProductDto.add(new ProductDto(4, "Name_4", "http://s019.radikal.ru/i601/1205/02/143ebfe4fbad.jpg", "Description_1", 400, 1));
         mProductDto.add(new ProductDto(5, "Name_5", "http://www.ixbt.com/mobile/cat-b100/cat-b100-box.jpg", "Description_1", 500, 1));
         mProductDto.add(new ProductDto(6, "Name_6", "http://img2.korablik.ru/upload/catalog/25912/25912_1000.jpg", "Description_1", 600, 1));
-//        mProductDto.add(new ProductDto(7, "Name_7", "", "Description_1", 700, 1));
-//        mProductDto.add(new ProductDto(8, "Name_8", "", "Description_1", 800, 1));
-//        mProductDto.add(new ProductDto(9, "Name_9", "", "Description_1", 900, 1));
-//        mProductDto.add(new ProductDto(10, "Name_10", "", "Description_1", 1000, 1));
     }
 
     public boolean isUserAuth() {
@@ -101,8 +99,8 @@ public class DataManager {
 
     public Map<String, String> getUserProfileInfo() {
         Map<String, String> profileInfo = new HashMap<>();
-        profileInfo.put(PreferencesManager.PROFILE_FULL_NAME_KEY, getPreferencesManager().getSharedPreferences().getString(PreferencesManager.PROFILE_FULL_NAME_KEY,"No name"));
-        profileInfo.put(PreferencesManager.PROFILE_PHONE_KEY, getPreferencesManager().getSharedPreferences().getString(PreferencesManager.PROFILE_PHONE_KEY,""));
+        profileInfo.put(PROFILE_FULL_NAME_KEY, getPreferencesManager().getSharedPreferences().getString(PROFILE_FULL_NAME_KEY,"No name"));
+        profileInfo.put(PROFILE_PHONE_KEY, getPreferencesManager().getSharedPreferences().getString(PROFILE_PHONE_KEY,""));
         return profileInfo;
     }
 
@@ -115,15 +113,16 @@ public class DataManager {
 
     public Map<String, Boolean> getUserSettings() {
         Map<String, Boolean> userSettings = new HashMap<>();
-        userSettings.put(PreferencesManager.NOTIFICATION_PROMO_KEY, getPreferencesManager().getSharedPreferences().getBoolean(PreferencesManager.NOTIFICATION_PROMO_KEY, false));
-        userSettings.put(PreferencesManager.NOTIFICATION_ORDER_KEY, getPreferencesManager().getSharedPreferences().getBoolean(PreferencesManager.NOTIFICATION_ORDER_KEY, false));
+        userSettings.put(NOTIFICATION_PROMO_KEY, getPreferencesManager().getSharedPreferences().getBoolean(NOTIFICATION_PROMO_KEY, false));
+        userSettings.put(NOTIFICATION_ORDER_KEY, getPreferencesManager().getSharedPreferences().getBoolean(NOTIFICATION_ORDER_KEY, false));
         return userSettings;
     }
 
-    public void saveProfileInfo(String name, String phone) {
+    public void saveProfileInfo(String name, String phone, String avatar) {
         SharedPreferences.Editor editor = getPreferencesManager().getSharedPreferences().edit();
-        editor.putString(PreferencesManager.PROFILE_FULL_NAME_KEY, name);
-        editor.putString(PreferencesManager.PROFILE_PHONE_KEY, phone);
+        editor.putString(PROFILE_FULL_NAME_KEY, name);
+        editor.putString(PROFILE_PHONE_KEY, phone);
+        editor.putString(PROFILE_AVATAR_KEY, avatar);
         editor.apply();
     }
 
@@ -135,5 +134,16 @@ public class DataManager {
 
     public void addAddress(UserAddressDto userAddressDto) {
 
+    }
+
+    public void updateOrInsertAddress(UserAddressDto address) {
+//        SharedPreferences.Editor editor = getPreferencesManager().getSharedPreferences().edit();
+//        editor.putBoolean(NOTIFICATION_ORDER_KEY, add);
+//        editor.apply();
+        // TODO: 18.12.2016 implement me
+    }
+
+    public void removeAddress(UserAddressDto address) {
+        // TODO: 18.12.2016 implement me
     }
 }

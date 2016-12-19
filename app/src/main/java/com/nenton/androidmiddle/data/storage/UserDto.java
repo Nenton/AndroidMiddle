@@ -27,12 +27,14 @@ public class UserDto implements Parcelable {
         userAddresses = in.createTypedArrayList(UserAddressDto.CREATOR);
     }
 
-    public UserDto(Map<String, String> userProfileInfo, ArrayList<UserAddressDto> userAddresses, Map<String, Boolean> userSettings) {
+    public UserDto(Map<String, String> userProfileInfo, ArrayList<UserAddressDto> userAddresses, boolean order, boolean promo) {
         this.fullname = userProfileInfo.get(PreferencesManager.PROFILE_FULL_NAME_KEY);
         this.avatar = userProfileInfo.get(PreferencesManager.PROFILE_AVATAR_KEY);
         this.phone = userProfileInfo.get(PreferencesManager.PROFILE_PHONE_KEY);
-        this.orderNotification = userSettings.get(PreferencesManager.NOTIFICATION_ORDER_KEY);
-        this.promoNotification = userSettings.get(PreferencesManager.NOTIFICATION_PROMO_KEY);
+//        this.promoNotification = userSettings.get(PreferencesManager.NOTIFICATION_PROMO_KEY);
+//        this.orderNotification = userSettings.get(PreferencesManager.NOTIFICATION_ORDER_KEY);
+        this.orderNotification = order;
+        this.promoNotification = promo;
         this.userAddresses = userAddresses;
     }
 

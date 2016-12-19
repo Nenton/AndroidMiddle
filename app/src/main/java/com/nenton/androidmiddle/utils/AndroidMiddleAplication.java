@@ -29,7 +29,7 @@ public class AndroidMiddleAplication extends Application {
     }
     private MortarScope mMortarScope;
     private MortarScope mRootActivityScope;
-    private RootActivity.RootComponent mRootActivityRootComponent;
+    private static RootActivity.RootComponent mRootActivityRootComponent;
 
     @Override
     public Object getSystemService(String name) {
@@ -77,5 +77,9 @@ public class AndroidMiddleAplication extends Application {
 
     public static Context getContext() {
         return sContext;
+    }
+
+    public static RootActivity.RootComponent getRootActivityRootComponent() {
+        return mRootActivityRootComponent;
     }
 }

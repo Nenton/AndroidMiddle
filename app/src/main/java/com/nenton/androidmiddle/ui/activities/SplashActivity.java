@@ -12,6 +12,7 @@ import android.widget.FrameLayout;
 import com.nenton.androidmiddle.BuildConfig;
 import com.nenton.androidmiddle.R;
 
+import com.nenton.androidmiddle.data.storage.UserInfoDto;
 import com.nenton.androidmiddle.di.DaggerService;
 import com.nenton.androidmiddle.flow.TreeKeyDispatcher;
 import com.nenton.androidmiddle.mortar.ScreenScoper;
@@ -96,7 +97,7 @@ public class SplashActivity extends AppCompatActivity implements IRootView {
     }
 
     @Override
-    public void showError(Exception e) {
+    public void showError(Throwable e) {
         if (BuildConfig.DEBUG) {
             showMessage(e.getMessage());
             e.printStackTrace();
@@ -133,6 +134,11 @@ public class SplashActivity extends AppCompatActivity implements IRootView {
     @Override
     public IView getCurrentScreen() {
         return (IView) mRootFrame.getChildAt(0);
+    }
+
+    @Override
+    public void initDrawer(UserInfoDto infoDto) {
+
     }
 
     //endregion

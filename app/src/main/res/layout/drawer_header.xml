@@ -9,12 +9,14 @@
                 android:paddingTop="@dimen/header_top_padding"
                 android:theme="@style/ThemeOverlay.AppCompat.Dark">
     <ImageView
+        android:id="@+id/drawer_user_avatar"
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:src="#000"/>
     <TextView
+        android:id="@+id/drawer_user_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"

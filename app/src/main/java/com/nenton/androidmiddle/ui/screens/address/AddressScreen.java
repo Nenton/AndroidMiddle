@@ -1,8 +1,10 @@
 package com.nenton.androidmiddle.ui.screens.address;
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 
 import com.nenton.androidmiddle.R;
+import com.nenton.androidmiddle.data.storage.UserAddressDto;
 import com.nenton.androidmiddle.di.DaggerService;
 import com.nenton.androidmiddle.di.sqopes.AddressScope;
 import com.nenton.androidmiddle.flow.AbstractScreen;
@@ -22,6 +24,28 @@ import mortar.ViewPresenter;
 
 @Screen(R.layout.screen_address)
 public class AddressScreen extends AbstractScreen<AccountScreen.Component> implements TreeKey{
+
+    @Nullable
+    private UserAddressDto mAddress;
+
+    public AddressScreen(@Nullable UserAddressDto address) {
+        mAddress = address;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (mAddress != null ){
+            return o instanceof AddressScreen && mAddress.equals(((AddressScreen)o).mAddress);
+        } else {
+            return super.equals(o);
+        }
+    }
+
+    @Override
+    public int hashCode() {
+        return mAddress != null ? mAddress.hashCode() : super.hashCode();
+    }
+
     @Override
     public Object createScreenComponent(AccountScreen.Component parentComponent) {
         return DaggerAddressScreen_Component.builder()
@@ -73,13 +97,16 @@ public class AddressScreen extends AbstractScreen<AccountScreen.Component> imple
         @Override
         protected void onLoad(Bundle savedInstanceState) {
             super.onLoad(savedInstanceState);
+            if (mAddress != null && getView() != null){
+                getView().initView(mAddress);
+            }
         }
 
         @Override
         public void clickOnAddAddress() {
             // TODO: 14.12.2016 save addres in model
             if (getView() != null){
-                mAccountModel.addAddress(getView().getUserAddress());
+                mAccountModel.updateOrInsertAddress(getView().getUserAddress());
                 Flow.get(getView()).goBack();
             }
         }

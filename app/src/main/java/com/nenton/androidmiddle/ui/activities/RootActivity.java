@@ -1,6 +1,7 @@
 package com.nenton.androidmiddle.ui.activities;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -13,16 +14,21 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.nenton.androidmiddle.BuildConfig;
 import com.nenton.androidmiddle.R;
+import com.nenton.androidmiddle.data.storage.UserInfoDto;
 import com.nenton.androidmiddle.di.DaggerService;
 import com.nenton.androidmiddle.di.components.AppComponent;
 import com.nenton.androidmiddle.di.modules.PicassoCacheModule;
 import com.nenton.androidmiddle.di.modules.RootModule;
 import com.nenton.androidmiddle.di.sqopes.RootScope;
 import com.nenton.androidmiddle.flow.TreeKeyDispatcher;
+import com.nenton.androidmiddle.mvp.models.AccountModel;
 import com.nenton.androidmiddle.mvp.presenters.RootPresenter;
 import com.nenton.androidmiddle.mvp.views.IRootView;
 import com.nenton.androidmiddle.mvp.views.IView;
@@ -54,6 +60,8 @@ public class RootActivity extends AppCompatActivity implements IRootView, Naviga
 
     @Inject
     RootPresenter mRootPresenter;
+    @Inject
+    Picasso mPicasso;
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -78,7 +86,6 @@ public class RootActivity extends AppCompatActivity implements IRootView, Naviga
         ButterKnife.bind(this);
         RootComponent rootComponent = DaggerService.getDaggerComponent(this);
         rootComponent.inject(this);
-        initDrawer();
         initToolbar();
         mRootPresenter.takeView(this);
         mRootPresenter.initView();
@@ -98,14 +105,11 @@ public class RootActivity extends AppCompatActivity implements IRootView, Naviga
     }
 
     private void initToolbar() {
+        setSupportActionBar(mToolbar);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, mDrawerLayout, mToolbar, R.string.open_drawer, R.string.close_drawer);
         mDrawerLayout.setDrawerListener(toggle);
         toggle.syncState();
         mNavigationView.setNavigationItemSelectedListener(this);
-    }
-
-    private void initDrawer() {
-        setSupportActionBar(mToolbar);
     }
 
     @Override
@@ -143,7 +147,7 @@ public class RootActivity extends AppCompatActivity implements IRootView, Naviga
     }
 
     @Override
-    public void showError(Exception e) {
+    public void showError(Throwable e) {
         if (BuildConfig.DEBUG) {
             showMessage(e.getMessage());
             e.printStackTrace();
@@ -172,6 +176,20 @@ public class RootActivity extends AppCompatActivity implements IRootView, Naviga
         return (IView) mFrameContainer.getChildAt(0);
     }
 
+    @Override
+    public void initDrawer(UserInfoDto infoDto) {
+        View header = mNavigationView.getHeaderView(0);
+        ImageView avatar = (ImageView) header.findViewById(R.id.drawer_user_avatar);
+        TextView userName = (TextView) header.findViewById(R.id.drawer_user_name);
+
+        mPicasso.load(infoDto.getAvatar())
+                .fit()
+                .centerCrop()
+                .into(avatar);
+
+        userName.setText(infoDto.getName());
+    }
+
     //endregion
     @Override
     public void onBackPressed() {
@@ -185,6 +203,18 @@ public class RootActivity extends AppCompatActivity implements IRootView, Naviga
         return false;
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        mRootPresenter.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        mRootPresenter.onRequestPermissionResult(requestCode, permissions, grantResults);
+    }
+
     //region ========================= DI =========================
 
     @dagger.Component(dependencies = AppComponent.class, modules = {RootModule.class, PicassoCacheModule.class})
@@ -192,6 +222,8 @@ public class RootActivity extends AppCompatActivity implements IRootView, Naviga
     public interface RootComponent {
         void inject(RootActivity rootActivity);
         void inject(SplashActivity splashActivity);
+        void inject(RootPresenter rootPresenter);
+        AccountModel getAccountModel();
         RootPresenter getRootPresenter();
         Picasso getPicasso();
     }
