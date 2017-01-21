@@ -3,6 +3,7 @@ package com.nenton.androidmiddle.di.modules;
 import android.content.Context;
 
 import com.nenton.androidmiddle.data.managers.PreferencesManager;
+import com.nenton.androidmiddle.data.managers.RealmManager;
 
 import javax.inject.Singleton;
 
@@ -10,7 +11,7 @@ import dagger.Module;
 import dagger.Provides;
 
 @Module
-public class LocalModule {
+public class LocalModule extends FlavorLocalModule{
 
     @Provides
     @Singleton
@@ -18,8 +19,4 @@ public class LocalModule {
         return new PreferencesManager(context);
     }
 
-//    @Provides
-//    DataBaseManager provideDBManager(Context context){
-//        return new DataBaseManager(context);
-//    }
 }

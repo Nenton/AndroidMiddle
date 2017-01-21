@@ -2,15 +2,17 @@ package com.nenton.androidmiddle.ui.screens.product;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.util.Log;
-import android.widget.ImageButton;
+import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.nenton.androidmiddle.R;
-import com.nenton.androidmiddle.data.storage.ProductDto;
+import com.nenton.androidmiddle.data.storage.dto.ProductDto;
+import com.nenton.androidmiddle.data.storage.dto.ProductLocalInfo;
 import com.nenton.androidmiddle.di.DaggerService;
+import com.nenton.androidmiddle.mvp.views.AbstractView;
 import com.nenton.androidmiddle.mvp.views.IProductView;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.NetworkPolicy;
@@ -22,7 +24,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class ProductView extends LinearLayout implements IProductView{
+public class ProductView extends AbstractView<ProductScreen.ProductPresenter> implements IProductView{
 
     private static final String TAG = "Product View";
 
@@ -34,59 +36,27 @@ public class ProductView extends LinearLayout implements IProductView{
     TextView mProductCount;
     @BindView(R.id.product_price)
     TextView mProductPrice;
-    @BindView(R.id.minus_btn)
-    ImageButton mMinusBtn;
-    @BindView(R.id.plus_btn)
-    ImageButton mPlusBtn;
     @BindView(R.id.product_image)
     ImageView mProductImage;
+    @BindView(R.id.show_more_btn)
+    Button mMoreBtn;
+    @BindView(R.id.favorite_btn)
+    CheckBox mFavorite;
 
-    @Inject
-    ProductScreen.ProductPresenter mProductPresenter;
     @Inject
     Picasso mPicasso;
 
     public ProductView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        if (!isInEditMode()){
-            DaggerService.<ProductScreen.Component>getDaggerComponent(context).inject(this);
-        }
-    }
-
-    @OnClick(R.id.minus_btn)
-    void clickMinus() {
-        mProductPresenter.clickOnMinus();
-    }
-
-    @OnClick(R.id.plus_btn)
-    void clickPlus() {
-        mProductPresenter.clickOnPlus();
     }
 
     @Override
-    protected void onFinishInflate() {
-        super.onFinishInflate();
-        ButterKnife.bind(this);
-        if (!isInEditMode()) {
-            //showViewFromState();
-        }
+    protected void initDagger(Context context) {
+        DaggerService.<ProductScreen.Component>getDaggerComponent(context).inject(this);
     }
 
-
-    @Override
-    protected void onAttachedToWindow() {
-        super.onAttachedToWindow();
-        if (!isInEditMode()) {
-            mProductPresenter.takeView(this);
-        }
-    }
-
-    @Override
-    protected void onDetachedFromWindow() {
-        super.onDetachedFromWindow();
-        if (!isInEditMode()) {
-            mProductPresenter.dropView(this);
-        }
+    public ProductLocalInfo getProductLocalInfo(){
+        return new ProductLocalInfo(0, mFavorite.isChecked(), Integer.parseInt(mProductCount.getText().toString()));
     }
 
     //region ========================= IProductView =========================
@@ -138,4 +108,27 @@ public class ProductView extends LinearLayout implements IProductView{
     }
     //endregion
 
+    //region ========================= Events =========================
+
+    @OnClick(R.id.minus_btn)
+    void clickMinus() {
+        mPresenter.clickOnMinus();
+    }
+
+    @OnClick(R.id.plus_btn)
+    void clickPlus() {
+        mPresenter.clickOnPlus();
+    }
+
+    @OnClick(R.id.show_more_btn)
+    void clickOnShowMore(){
+        mPresenter.clickShowMore();
+    }
+
+    @OnClick(R.id.favorite_btn)
+    void clickOnFavorite(){
+        mPresenter.clickFavorite();
+    }
+
+    //endregion
 }

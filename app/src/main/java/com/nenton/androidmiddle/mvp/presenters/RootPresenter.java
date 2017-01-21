@@ -3,44 +3,97 @@ package com.nenton.androidmiddle.mvp.presenters;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.ViewPager;
 
 import com.fernandocejas.frodo.annotation.RxLogSubscriber;
-import com.nenton.androidmiddle.data.storage.ActivityResultDto;
-import com.nenton.androidmiddle.data.storage.UserInfoDto;
+import com.nenton.androidmiddle.data.storage.dto.ActivityResultDto;
+import com.nenton.androidmiddle.data.storage.dto.UserInfoDto;
 import com.nenton.androidmiddle.mvp.models.AccountModel;
 import com.nenton.androidmiddle.mvp.views.IRootView;
 import com.nenton.androidmiddle.ui.activities.RootActivity;
+import com.nenton.androidmiddle.ui.activities.SplashActivity;
 import com.nenton.androidmiddle.utils.AndroidMiddleAplication;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 
+import mortar.Presenter;
+import mortar.bundler.BundleService;
 import rx.Subscriber;
+import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import rx.subjects.PublishSubject;
 
-public class RootPresenter extends AbstractPresenter<IRootView>{
+public class RootPresenter extends Presenter<IRootView>{
 
     private PublishSubject<ActivityResultDto> mActivityResultDtoObs = PublishSubject.create();
     @Inject
     AccountModel mAccountModel;
+    private Subscription userInfoSub;
+
+    private static int DEFAULT_MODE = 0;
+    private static int TAB_MODE = 1;
 
     public RootPresenter() {
         AndroidMiddleAplication.getRootActivityRootComponent().inject(this);
     }
 
+    @Override
+    protected BundleService extractBundleService(IRootView view) {
+        return (view instanceof RootActivity) ?
+                BundleService.getBundleService((RootActivity) view) :
+                BundleService.getBundleService((SplashActivity) view);
+    }
+
     public PublishSubject<ActivityResultDto> getActivityResultDtoObs(){
         return mActivityResultDtoObs;
     }
+
     @Override
-    public void initView() {
-        mAccountModel.getUserInfoObs()
+    protected void onLoad(Bundle savedInstanceState) {
+        super.onLoad(savedInstanceState);
+        if (getView() instanceof RootActivity){
+            userInfoSub = subscribeOnUserInfoObs();
+        }
+    }
+
+    @Override
+    public void dropView(IRootView view) {
+        if (userInfoSub != null){
+            userInfoSub.unsubscribe();
+        }
+        super.dropView(view);
+    }
+
+    private Subscription subscribeOnUserInfoObs(){
+        return mAccountModel.getUserInfoObs()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new UserInfoSubscriber());
     }
+
+    @Nullable
+    public IRootView getRootView() {
+        return getView();
+    }
+
+    public ActionBarBuilder newActionBarBuilder() {
+        return this.new ActionBarBuilder();
+    }
+    //    @Override
+//    public void initView() {
+//        mAccountModel.getUserInfoObs()
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(new UserInfoSubscriber());
+//    }
 
     @RxLogSubscriber
     private class UserInfoSubscriber extends Subscriber<UserInfoDto>{
@@ -92,5 +145,54 @@ public class RootPresenter extends AbstractPresenter<IRootView>{
         // TODO: 18.12.2016 implement me
     }
 
+    public class ActionBarBuilder{
+        private boolean isGoBack = false;
+        private boolean isVisable = true;
+        private CharSequence title;
+        private List<MenuItemHolder> items = new ArrayList<>();
+        private ViewPager pager;
+        private int toolbarMode = DEFAULT_MODE;
 
+        public ActionBarBuilder setBackArrow(boolean enable){
+            this.isGoBack = enable;
+            return this;
+        }
+
+        public ActionBarBuilder setVisable(boolean visibale){
+            this.isVisable = visibale;
+            return this;
+        }
+
+        public ActionBarBuilder addAction(MenuItemHolder menuItem){
+            this.items.add(menuItem);
+            return this;
+        }
+
+        public ActionBarBuilder setTab (ViewPager pager){
+            this.toolbarMode = TAB_MODE;
+            this.pager = pager;
+            return this;
+        }
+
+        public ActionBarBuilder setTitle(CharSequence title) {
+            this.title = title;
+            return this;
+        }
+
+        public void build(){
+            if (getView() != null){
+                RootActivity activity = (RootActivity) getView();
+                activity.setVisable(isVisable);
+                activity.setTitle(title);
+                activity.setBackArrow(isGoBack);
+                activity.setMenuItem(items);
+                if (toolbarMode == TAB_MODE){
+                    activity.setTabLayout(pager);
+                } else {
+                    activity.removeTabLayout();
+                }
+            }
+        }
+
+    }
 }

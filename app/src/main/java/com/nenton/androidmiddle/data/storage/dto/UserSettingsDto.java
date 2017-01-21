@@ -1,4 +1,4 @@
-package com.nenton.androidmiddle.data.storage;
+package com.nenton.androidmiddle.data.storage.dto;
 
 public class UserSettingsDto {
     private boolean orderNotification;

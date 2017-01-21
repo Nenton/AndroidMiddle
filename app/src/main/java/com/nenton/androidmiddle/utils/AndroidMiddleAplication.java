@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import com.facebook.stetho.Stetho;
 import com.nenton.androidmiddle.di.DaggerService;
 import com.nenton.androidmiddle.di.components.AppComponent;
 import com.nenton.androidmiddle.di.components.DaggerAppComponent;
@@ -14,7 +15,9 @@ import com.nenton.androidmiddle.di.modules.RootModule;
 import com.nenton.androidmiddle.mortar.ScreenScoper;
 import com.nenton.androidmiddle.ui.activities.DaggerRootActivity_RootComponent;
 import com.nenton.androidmiddle.ui.activities.RootActivity;
+import com.uphyca.stetho_realm.RealmInspectorModulesProvider;
 
+import io.realm.Realm;
 import mortar.MortarScope;
 import mortar.bundler.BundleServiceRunner;
 
@@ -39,7 +42,14 @@ public class AndroidMiddleAplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        sContext = this;
+        Realm.init(this);
+
+        Stetho.initialize(Stetho.newInitializerBuilder(this)
+        .enableDumpapp(Stetho.defaultDumperPluginsProvider(this))
+        .enableWebKitInspector(RealmInspectorModulesProvider.builder(this).build())
+        .build());
+
+        sContext = getApplicationContext();
         sSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         createAppComponent();
         createRootActivityComponent();
@@ -71,9 +81,9 @@ public class AndroidMiddleAplication extends Application {
                 .build();
     }
 
-    public static SharedPreferences getSharedPreferences() {
-        return sSharedPreferences;
-    }
+//    public static SharedPreferences getSharedPreferences() {
+//        return sSharedPreferences;
+//    }
 
     public static Context getContext() {
         return sContext;

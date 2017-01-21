@@ -1,7 +1,6 @@
 package com.nenton.androidmiddle.ui.screens.account;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.net.Uri;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.app.AlertDialog;
@@ -19,9 +18,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.nenton.androidmiddle.R;
-import com.nenton.androidmiddle.data.storage.UserDto;
-import com.nenton.androidmiddle.data.storage.UserInfoDto;
-import com.nenton.androidmiddle.data.storage.UserSettingsDto;
+import com.nenton.androidmiddle.data.storage.dto.UserDto;
+import com.nenton.androidmiddle.data.storage.dto.UserInfoDto;
+import com.nenton.androidmiddle.data.storage.dto.UserSettingsDto;
 import com.nenton.androidmiddle.di.DaggerService;
 import com.nenton.androidmiddle.mvp.views.IAccountView;
 import com.nenton.androidmiddle.ui.screens.address.AddressesAdapter;

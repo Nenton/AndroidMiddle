@@ -10,10 +10,10 @@ import android.support.annotation.Nullable;
 import android.support.v4.content.FileProvider;
 
 import com.nenton.androidmiddle.R;
-import com.nenton.androidmiddle.data.storage.ActivityResultDto;
-import com.nenton.androidmiddle.data.storage.UserAddressDto;
-import com.nenton.androidmiddle.data.storage.UserInfoDto;
-import com.nenton.androidmiddle.data.storage.UserSettingsDto;
+import com.nenton.androidmiddle.data.storage.dto.ActivityResultDto;
+import com.nenton.androidmiddle.data.storage.dto.UserAddressDto;
+import com.nenton.androidmiddle.data.storage.dto.UserInfoDto;
+import com.nenton.androidmiddle.data.storage.dto.UserSettingsDto;
 import com.nenton.androidmiddle.di.DaggerService;
 import com.nenton.androidmiddle.di.sqopes.AccountScope;
 import com.nenton.androidmiddle.flow.AbstractScreen;
@@ -40,7 +40,6 @@ import flow.Flow;
 import mortar.MortarScope;
 import rx.Observable;
 import rx.Subscription;
-import rx.functions.Func1;
 
 import static android.Manifest.permission.*;
 import static android.os.Environment.DIRECTORY_PICTURES;
@@ -325,7 +324,7 @@ public class AccountScreen extends AbstractScreen<RootActivity.RootComponent> {
         @Nullable
         @Override
         protected IRootView getRootView() {
-            return mRootPresenter.getView();
+            return mRootPresenter.getRootView();
         }
 
         public void switchSettings() {

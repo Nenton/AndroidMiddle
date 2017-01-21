@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.nenton.androidmiddle.R;
-import com.nenton.androidmiddle.data.storage.UserAddressDto;
+import com.nenton.androidmiddle.data.storage.dto.UserAddressDto;
 
 import java.util.ArrayList;
 

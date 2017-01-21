@@ -1,4 +1,4 @@
-package com.nenton.androidmiddle.data.storage;
+package com.nenton.androidmiddle.data.storage.dto;
 
 /**
  * Created by serge on 18.12.2016.

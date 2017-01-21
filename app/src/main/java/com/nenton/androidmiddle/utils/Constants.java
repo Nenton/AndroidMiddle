@@ -10,4 +10,6 @@ public interface Constants {
     int REQUEST_PROFILE_PHOTO_CAMERA = 1000;
     int REQUEST_PROFILE_PHOTO_PICTURE = 1001;
     String FILE_PROVIDER_AUTHORITY = "com.nenton.androidmiddle.fileprovider";
+    String LAST_MODIFIED_HEADER = "Last-Modified";
+    String IF_MODIFIED_SINCE_HEADER = "If-Modified-Since";
 }

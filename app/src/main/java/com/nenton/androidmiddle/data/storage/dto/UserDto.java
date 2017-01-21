@@ -1,4 +1,4 @@
-package com.nenton.androidmiddle.data.storage;
+package com.nenton.androidmiddle.data.storage.dto;
 
 import android.os.Parcel;
 import android.os.Parcelable;

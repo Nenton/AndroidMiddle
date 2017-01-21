@@ -12,7 +12,7 @@ import android.widget.FrameLayout;
 import com.nenton.androidmiddle.BuildConfig;
 import com.nenton.androidmiddle.R;
 
-import com.nenton.androidmiddle.data.storage.UserInfoDto;
+import com.nenton.androidmiddle.data.storage.dto.UserInfoDto;
 import com.nenton.androidmiddle.di.DaggerService;
 import com.nenton.androidmiddle.flow.TreeKeyDispatcher;
 import com.nenton.androidmiddle.mortar.ScreenScoper;
@@ -71,15 +71,15 @@ public class SplashActivity extends AppCompatActivity implements IRootView {
     }
 
     @Override
-    protected void onResume() {
+    protected void onStart() {
         mRootPresenter.takeView(this);
-        super.onResume();
+        super.onStart();
     }
 
     @Override
-    protected void onPause() {
-        mRootPresenter.dropView();
-        super.onPause();
+    protected void onStop() {
+        mRootPresenter.dropView(this);
+        super.onStop();
     }
 
     @Override

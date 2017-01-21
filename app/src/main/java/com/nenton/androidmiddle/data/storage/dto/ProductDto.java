@@ -1,7 +1,10 @@
-package com.nenton.androidmiddle.data.storage;
+package com.nenton.androidmiddle.data.storage.dto;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+
+import com.nenton.androidmiddle.data.network.res.ProductRes;
+import com.nenton.androidmiddle.data.storage.realm.ProductRealm;
 
 public class ProductDto implements Parcelable{
    private int id;
@@ -10,6 +13,7 @@ public class ProductDto implements Parcelable{
    private String description;
    private int price;
    private int count;
+    private boolean favorite;
 
     public ProductDto(int id, String productName, String urlProduct, String description, int price, int count) {
         this.id = id;
@@ -20,6 +24,14 @@ public class ProductDto implements Parcelable{
         this.count = count;
     }
 
+    public ProductDto(ProductRealm productRealm) {
+        this.productName = productRealm.getProductName();
+        this.urlProduct = productRealm.getImageUrl();
+        this.description = productRealm.getDescription();
+        this.price = productRealm.getPrice();
+        this.count = productRealm.getCount();
+        this.favorite = productRealm.isFavorite();
+    }
 
     //region ========================= Parcelable =========================
 
@@ -43,6 +55,16 @@ public class ProductDto implements Parcelable{
             return new ProductDto[size];
         }
     };
+
+    public ProductDto(ProductRes productRes, ProductLocalInfo productLocalInfo) {
+        this.id = productRes.getRemoteId();
+        this.productName = productRes.getProductName();
+        this.urlProduct = productRes.getImageUrl();
+        this.description = productRes.getDescription();
+        this.price = productRes.getPrice();
+        this.count = productLocalInfo.getCount();
+        this.favorite = productLocalInfo.isFavorite();
+    }
 
     @Override
     public int describeContents() {

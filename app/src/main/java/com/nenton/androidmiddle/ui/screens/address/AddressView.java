@@ -8,7 +8,7 @@ import android.widget.EditText;
 import android.widget.RelativeLayout;
 
 import com.nenton.androidmiddle.R;
-import com.nenton.androidmiddle.data.storage.UserAddressDto;
+import com.nenton.androidmiddle.data.storage.dto.UserAddressDto;
 import com.nenton.androidmiddle.di.DaggerService;
 import com.nenton.androidmiddle.mvp.views.IAddressView;
 

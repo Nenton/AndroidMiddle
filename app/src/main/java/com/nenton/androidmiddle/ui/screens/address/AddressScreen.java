@@ -4,14 +4,13 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 
 import com.nenton.androidmiddle.R;
-import com.nenton.androidmiddle.data.storage.UserAddressDto;
+import com.nenton.androidmiddle.data.storage.dto.UserAddressDto;
 import com.nenton.androidmiddle.di.DaggerService;
 import com.nenton.androidmiddle.di.sqopes.AddressScope;
 import com.nenton.androidmiddle.flow.AbstractScreen;
 import com.nenton.androidmiddle.flow.Screen;
 import com.nenton.androidmiddle.mvp.models.AccountModel;
 import com.nenton.androidmiddle.mvp.presenters.IAddressPresenter;
-import com.nenton.androidmiddle.ui.activities.RootActivity;
 import com.nenton.androidmiddle.ui.screens.account.AccountScreen;
 
 import javax.inject.Inject;

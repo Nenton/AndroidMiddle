@@ -2,7 +2,7 @@ package com.nenton.androidmiddle.mvp.views;
 
 import android.support.annotation.Nullable;
 
-import com.nenton.androidmiddle.data.storage.UserInfoDto;
+import com.nenton.androidmiddle.data.storage.dto.UserInfoDto;
 
 public interface IRootView extends IView{
     void showMessage(String message);

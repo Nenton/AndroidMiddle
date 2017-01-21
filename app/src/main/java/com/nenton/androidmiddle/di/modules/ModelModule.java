@@ -12,6 +12,6 @@ public class ModelModule {
     @Provides
     @Singleton
     DataManager provideDataManager(){
-        return new DataManager();
+        return DataManager.getInstance();
     }
 }

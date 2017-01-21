@@ -1,14 +1,13 @@
 package com.nenton.androidmiddle.mvp.models;
 
-import com.nenton.androidmiddle.data.storage.UserAddressDto;
-import com.nenton.androidmiddle.data.storage.UserInfoDto;
-import com.nenton.androidmiddle.data.storage.UserSettingsDto;
+import com.nenton.androidmiddle.data.storage.dto.UserAddressDto;
+import com.nenton.androidmiddle.data.storage.dto.UserInfoDto;
+import com.nenton.androidmiddle.data.storage.dto.UserSettingsDto;
 
 import java.util.ArrayList;
 import java.util.Map;
 
 import rx.Observable;
-import rx.subjects.BehaviorSubject;
 import rx.subjects.PublishSubject;
 
 import static com.nenton.androidmiddle.data.managers.PreferencesManager.*;

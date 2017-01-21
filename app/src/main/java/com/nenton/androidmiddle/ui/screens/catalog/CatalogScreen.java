@@ -2,29 +2,29 @@ package com.nenton.androidmiddle.ui.screens.catalog;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 
 import com.nenton.androidmiddle.R;
-import com.nenton.androidmiddle.data.storage.ProductDto;
+import com.nenton.androidmiddle.data.storage.realm.ProductRealm;
 import com.nenton.androidmiddle.di.DaggerService;
-import com.nenton.androidmiddle.di.sqopes.CatalogScope;
+import com.nenton.androidmiddle.di.sqopes.DaggerScope;
 import com.nenton.androidmiddle.flow.AbstractScreen;
 import com.nenton.androidmiddle.flow.Screen;
 import com.nenton.androidmiddle.mvp.models.CatalogModel;
+import com.nenton.androidmiddle.mvp.presenters.AbstractPresenter;
 import com.nenton.androidmiddle.mvp.presenters.ICatalogPresenter;
+import com.nenton.androidmiddle.mvp.presenters.MenuItemHolder;
 import com.nenton.androidmiddle.mvp.presenters.RootPresenter;
-import com.nenton.androidmiddle.mvp.views.IRootView;
 import com.nenton.androidmiddle.ui.activities.RootActivity;
 import com.nenton.androidmiddle.ui.screens.auth.AuthScreen;
+import com.nenton.androidmiddle.ui.screens.catalog.adapters.CatalogAdapter;
 import com.nenton.androidmiddle.ui.screens.product.ProductScreen;
 import com.squareup.picasso.Picasso;
-
-import javax.inject.Inject;
 
 import dagger.Provides;
 import flow.Flow;
 import mortar.MortarScope;
-import mortar.ViewPresenter;
+import rx.Subscriber;
+import rx.Subscription;
 
 @Screen(R.layout.screen_catalog)
 public class CatalogScreen extends AbstractScreen<RootActivity.RootComponent> {
@@ -38,91 +38,135 @@ public class CatalogScreen extends AbstractScreen<RootActivity.RootComponent> {
 
     //region ========================= DI =========================
     @dagger.Module
-    public class Module{
+    public class Module {
         @Provides
-        @CatalogScope
-        CatalogModel provideCatalogModel(){
+        @DaggerScope(CatalogScreen.class)
+        CatalogModel provideCatalogModel() {
             return new CatalogModel();
         }
 
         @Provides
-        @CatalogScope
-        CatalogPresenter provideCatalogPresenter(){
+        @DaggerScope(CatalogScreen.class)
+        CatalogPresenter provideCatalogPresenter() {
             return new CatalogPresenter();
         }
     }
 
     @dagger.Component(dependencies = RootActivity.RootComponent.class, modules = Module.class)
-    @CatalogScope
-    public interface Component{
+    @DaggerScope(CatalogScreen.class)
+    public interface Component {
         void inject(CatalogPresenter presenter);
-
         void inject(CatalogView view);
 
         CatalogModel getCatalogModel();
-
         Picasso getPicasso();
+        RootPresenter getRootPresenter();
+
     }
 
     //endregion
 
     //region ========================= Presenter =========================
 
-    public class CatalogPresenter extends ViewPresenter<CatalogView> implements ICatalogPresenter{
+    public class CatalogPresenter extends AbstractPresenter<CatalogView, CatalogModel> implements ICatalogPresenter {
 
-        @Inject
-        RootPresenter mRootPresenter;
-
-        @Inject
-        CatalogModel mCatalogModel;
+        private int lastPagerPosition;
 
         @Override
-        protected void onEnterScope(MortarScope scope) {
-            super.onEnterScope(scope);
-            ((Component)scope.getService(DaggerService.SERVICE_NAME)).inject(this);
+        protected void initDagger(MortarScope scope) {
+            ((Component) scope.getService(DaggerService.SERVICE_NAME)).inject(this);
         }
 
         @Override
         protected void onLoad(Bundle savedInstanceState) {
             super.onLoad(savedInstanceState);
-            if (getView()!=null){
-                getView().showCatalogView(mCatalogModel.getProductList());
-            }
+            mCompSubs.add(subscribeOnProductRealmObs());
+        }
+
+        @Override
+        public void dropView(CatalogView view) {
+            lastPagerPosition = getView().getCurrentPagerPosition();
+            super.dropView(view);
+        }
+
+        @Override
+        protected void initActionBar() {
+            mRootPresenter.newActionBarBuilder()
+                    .setTitle("Каталог")
+                    .addAction(new MenuItemHolder("В корзину", R.drawable.ic_shopping_basket_black_24dp, item -> {
+                        getRootView().showMessage("Перейти в корзину");
+                        return true;
+                    }))
+                    .build();
         }
 
         @Override
         public void clickOnBuyButton(int position) {
-            if (getView()!=null){
-                if (checkUserAuth() && getRootView() != null){
-                    getRootView().showMessage("Товар " + mCatalogModel.getProductList().get(position).getProductName() + " успешно добавлен в корзину");
-                getView().showCatalogView(mCatalogModel.getProductList());
+//            mCatalogModel.getProductObs()
+//                    .doOnNext(o -> Log.e("THREAD", "call: " + Thread.currentThread().getName()))
+//                    .subscribeOn(Schedulers.io())
+//                    .observeOn(AndroidSchedulers.mainThread())
+//                    .subscribe(productDto -> {
+//                        Log.e("PRODUCT", "from disk or network:  " + productDto.getProductName());
+//                    });
+            if (getView() != null) {
+                if (checkUserAuth() && getRootView() != null) {
+                    getRootView().showMessage("Товар " + "" + " успешно добавлен в корзину");
+                    getView().showCatalogView();
                 } else {
                     Flow.get(getView()).set(new AuthScreen());
                 }
             }
         }
 
-        @Nullable
-        private IRootView getRootView() {
-            return mRootPresenter.getView();
+        private Subscription subscribeOnProductRealmObs() {
+            if (getRootView() != null) {
+                getRootView().showLoad();
+            }
+            return mModel.getProductObs()
+                    .subscribe(new RealmSubscriber());
         }
 
         @Override
         public boolean checkUserAuth() {
-            return mCatalogModel.isUserAuth();
+            return mModel.isUserAuth();
+        }
+
+        private class RealmSubscriber extends Subscriber<ProductRealm> {
+            CatalogAdapter mAdapter = getView().getAdapter();
+
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                if (getRootView() != null) {
+                    getRootView().showError(e);
+                }
+            }
+
+            @Override
+            public void onNext(ProductRealm productRealm) {
+                mAdapter.addProduct(productRealm);
+                if (mAdapter.getCount() - 1 == lastPagerPosition);
+                getRootView().hideLoad();
+                getView().showCatalogView();
+            }
         }
     }
 
     //endregion
 
-    public static class Factory{
-        public static Context createProductContext(ProductDto product, Context parentContext){
+    public static class Factory {
+        public static Context createProductContext(ProductRealm product, Context parentContext) {
             MortarScope parentScope = MortarScope.getScope(parentContext);
             MortarScope childScope = null;
             ProductScreen screen = new ProductScreen(product);
-            String scopeName = String.format("%s_%d", screen.getScopeName(), product.getId());
+            String scopeName = String.format("%s_%s", screen.getScopeName(), product.getId());
 
-            if (parentScope.findChild(scopeName) == null){
+            if (parentScope.findChild(scopeName) == null) {
                 childScope = parentScope.buildChild()
                         .withService(DaggerService.SERVICE_NAME,
                                 screen.createScreenComponent(DaggerService.<CatalogScreen.Component>getDaggerComponent(parentContext)))

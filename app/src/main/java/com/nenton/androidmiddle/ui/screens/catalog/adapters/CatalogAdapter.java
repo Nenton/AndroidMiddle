@@ -8,9 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.nenton.androidmiddle.R;
-import com.nenton.androidmiddle.data.storage.ProductDto;
-import com.nenton.androidmiddle.flow.AbstractScreen;
-import com.nenton.androidmiddle.mortar.ScreenScoper;
+import com.nenton.androidmiddle.data.storage.realm.ProductRealm;
 import com.nenton.androidmiddle.ui.screens.catalog.CatalogScreen;
 
 import java.util.ArrayList;
@@ -22,7 +20,7 @@ public class CatalogAdapter extends PagerAdapter {
 
     private static final String TAG = "Catalog Adapter";
 
-    private List<ProductDto> mProducts = new ArrayList<>();
+    private List<ProductRealm> mProducts = new ArrayList<>();
 
     public CatalogAdapter() {
 
@@ -38,14 +36,14 @@ public class CatalogAdapter extends PagerAdapter {
         return view.equals(object);
     }
 
-    public void addProduct(ProductDto product){
+    public void addProduct(ProductRealm product){
         mProducts.add(product);
         notifyDataSetChanged();
     }
 
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
-        ProductDto productDto = mProducts.get(position);
+        ProductRealm productDto = mProducts.get(position);
         Context productContext = CatalogScreen.Factory.createProductContext(productDto, container.getContext());
         View newView = LayoutInflater.from(productContext).inflate(R.layout.screen_product, container, false);
         container.addView(newView);
