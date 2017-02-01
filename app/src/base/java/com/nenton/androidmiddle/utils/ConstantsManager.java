@@ -1,7 +1,11 @@
 package com.nenton.androidmiddle.utils;
 
+/**
+ * Created by serge on 21.01.2017.
+ */
 
-public interface Constants {
+public interface ConstantsManager {
+
     String USER_AUTH_TOKEN = "USER_AUTH_TOKEN";
 
     int REQUEST_PERMISSION_CAMERA = 3000;

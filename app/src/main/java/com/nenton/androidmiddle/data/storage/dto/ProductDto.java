@@ -15,6 +15,7 @@ public class ProductDto implements Parcelable{
    private int count;
     private boolean favorite;
 
+
     public ProductDto(int id, String productName, String urlProduct, String description, int price, int count) {
         this.id = id;
         this.productName = productName;
@@ -117,6 +118,9 @@ public class ProductDto implements Parcelable{
         count++;
     }
 
+    public boolean isFavorite() {
+        return favorite;
+    }
 
     //endregion
 }

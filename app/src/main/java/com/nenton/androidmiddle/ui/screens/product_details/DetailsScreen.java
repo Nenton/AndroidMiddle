@@ -99,6 +99,11 @@ public class DetailsScreen extends AbstractScreen<CatalogScreen.Component> imple
         }
 
         @Override
+        protected void initFab() {
+
+        }
+
+        @Override
         protected void initDagger(MortarScope scope) {
             ((Component) scope.getService(DaggerService.SERVICE_NAME)).inject(this);
         }

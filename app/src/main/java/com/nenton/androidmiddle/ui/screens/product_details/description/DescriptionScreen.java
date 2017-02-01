@@ -69,6 +69,11 @@ public class DescriptionScreen extends AbstractScreen<DetailsScreen.Component> {
         }
 
         @Override
+        protected void initFab() {
+
+        }
+
+        @Override
         protected void initDagger(MortarScope scope) {
             ((Component) scope.getService(DaggerService.SERVICE_NAME)).inject(this);
         }

@@ -25,7 +25,7 @@ import com.nenton.androidmiddle.mvp.presenters.SubscribePresenter;
 import com.nenton.androidmiddle.mvp.views.IRootView;
 import com.nenton.androidmiddle.ui.activities.RootActivity;
 import com.nenton.androidmiddle.ui.screens.address.AddressScreen;
-import com.nenton.androidmiddle.utils.Constants;
+import com.nenton.androidmiddle.utils.ConstantsManager;
 
 import java.io.File;
 import java.io.IOException;
@@ -190,13 +190,13 @@ public class AccountScreen extends AbstractScreen<RootActivity.RootComponent> {
         private void handleActivityResult(ActivityResultDto activityResultDto) {
             // TODO: 18.12.2016 fixme override in to RX
             switch (activityResultDto.getResultCode()){
-                case Constants.REQUEST_PROFILE_PHOTO_PICTURE:
+                case ConstantsManager.REQUEST_PROFILE_PHOTO_PICTURE:
                     if (activityResultDto.getIntent() != null){
                         String photoUri = activityResultDto.getIntent().getData().toString();
                         getView().updateAvatarPhoto(Uri.parse(photoUri));
                     }
                     break;
-                case Constants.REQUEST_PROFILE_PHOTO_CAMERA:
+                case ConstantsManager.REQUEST_PROFILE_PHOTO_CAMERA:
                     if (mPhotoFile != null){
                         getView().updateAvatarPhoto(Uri.fromFile(mPhotoFile));
                     }
@@ -247,7 +247,7 @@ public class AccountScreen extends AbstractScreen<RootActivity.RootComponent> {
         public void chooseCamera() {
             if (getRootView() != null) {
                 String[] permissions = new String[]{CAMERA, WRITE_EXTERNAL_STORAGE};
-                if (mRootPresenter.checkPermissionsAndRequestIfNotGranted(permissions, Constants.REQUEST_PERMISSION_CAMERA)) {
+                if (mRootPresenter.checkPermissionsAndRequestIfNotGranted(permissions, ConstantsManager.REQUEST_PERMISSION_CAMERA)) {
                     mPhotoFile = createFileForPhoto();
                     if (mPhotoFile == null) {
                         getRootView().showMessage("Фотография не может быть создана");
@@ -259,10 +259,10 @@ public class AccountScreen extends AbstractScreen<RootActivity.RootComponent> {
         }
 
         private void takePhotoFromCamera() {
-            Uri uri = FileProvider.getUriForFile(((RootActivity) getRootView()), Constants.FILE_PROVIDER_AUTHORITY, mPhotoFile);
+            Uri uri = FileProvider.getUriForFile(((RootActivity) getRootView()), ConstantsManager.FILE_PROVIDER_AUTHORITY, mPhotoFile);
             Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
             takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
-            ((RootActivity) getRootView()).startActivityForResult(takePictureIntent, Constants.REQUEST_PROFILE_PHOTO_CAMERA);
+            ((RootActivity) getRootView()).startActivityForResult(takePictureIntent, ConstantsManager.REQUEST_PROFILE_PHOTO_CAMERA);
         }
 
         private File createFileForPhoto() {
@@ -289,7 +289,7 @@ public class AccountScreen extends AbstractScreen<RootActivity.RootComponent> {
             if (getRootView() != null) {
                 String[] permissions = new String[]{READ_EXTERNAL_STORAGE};
                 if (mRootPresenter.checkPermissionsAndRequestIfNotGranted(permissions,
-                        Constants.REQUEST_PERMISSION_READ_EXTERNAL_STORAGE)) {
+                        ConstantsManager.REQUEST_PERMISSION_READ_EXTERNAL_STORAGE)) {
                     takePhotoFromGallery();
                 }
             }
@@ -305,7 +305,7 @@ public class AccountScreen extends AbstractScreen<RootActivity.RootComponent> {
                 intent.setAction(Intent.ACTION_OPEN_DOCUMENT);
                 intent.addCategory(Intent.CATEGORY_OPENABLE);
             }
-            ((RootActivity) getRootView()).startActivityForResult(intent, Constants.REQUEST_PROFILE_PHOTO_PICTURE);
+            ((RootActivity) getRootView()).startActivityForResult(intent, ConstantsManager.REQUEST_PROFILE_PHOTO_PICTURE);
         }
 
         //endregion

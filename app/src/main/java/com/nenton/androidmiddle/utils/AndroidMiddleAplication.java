@@ -15,7 +15,6 @@ import com.nenton.androidmiddle.di.modules.RootModule;
 import com.nenton.androidmiddle.mortar.ScreenScoper;
 import com.nenton.androidmiddle.ui.activities.DaggerRootActivity_RootComponent;
 import com.nenton.androidmiddle.ui.activities.RootActivity;
-import com.uphyca.stetho_realm.RealmInspectorModulesProvider;
 
 import io.realm.Realm;
 import mortar.MortarScope;
@@ -44,10 +43,10 @@ public class AndroidMiddleAplication extends Application {
         super.onCreate();
         Realm.init(this);
 
-        Stetho.initialize(Stetho.newInitializerBuilder(this)
-        .enableDumpapp(Stetho.defaultDumperPluginsProvider(this))
-        .enableWebKitInspector(RealmInspectorModulesProvider.builder(this).build())
-        .build());
+//        Stetho.initialize(Stetho.newInitializerBuilder(this)
+//        .enableDumpapp(Stetho.defaultDumperPluginsProvider(this))
+//        .enableWebKitInspector(RealmInspectorModulesProvider.builder(this).build())
+//        .build());
 
         sContext = getApplicationContext();
         sSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);

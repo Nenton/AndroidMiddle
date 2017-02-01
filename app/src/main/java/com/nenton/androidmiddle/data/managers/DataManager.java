@@ -2,14 +2,10 @@ package com.nenton.androidmiddle.data.managers;
 
 
 import android.content.SharedPreferences;
-import android.support.annotation.Nullable;
-import android.util.Log;
 
 import com.nenton.androidmiddle.data.network.RestCallTransformer;
 import com.nenton.androidmiddle.data.network.RestService;
 import com.nenton.androidmiddle.data.network.res.ProductRes;
-import com.nenton.androidmiddle.data.storage.dto.ProductDto;
-import com.nenton.androidmiddle.data.storage.dto.ProductLocalInfo;
 import com.nenton.androidmiddle.data.storage.dto.UserAddressDto;
 import com.nenton.androidmiddle.data.storage.realm.ProductRealm;
 import com.nenton.androidmiddle.di.DaggerService;
@@ -19,7 +15,6 @@ import com.nenton.androidmiddle.di.components.DataManagerComponent;
 import com.nenton.androidmiddle.di.modules.LocalModule;
 import com.nenton.androidmiddle.di.modules.NetworkModule;
 import com.nenton.androidmiddle.utils.AndroidMiddleAplication;
-import com.nenton.androidmiddle.utils.Constants;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -113,17 +108,17 @@ public class DataManager {
 //
 //
 //    public String getAuthToken() {
-//        return mPreferencesManager.getSharedPreferences().getString(Constants.USER_AUTH_TOKEN, "");
+//        return mPreferencesManager.getSharedPreferences().getString(ConstantsManager.USER_AUTH_TOKEN, "");
 //    }
 //
 //    public void setAuthToken(String token) {
 //        SharedPreferences.Editor editor = mPreferencesManager.getSharedPreferences().edit();
-//        editor.putString(Constants.USER_AUTH_TOKEN, token);
+//        editor.putString(ConstantsManager.USER_AUTH_TOKEN, token);
 //        editor.apply();
 //    }
 //
 //    public boolean equalsToken(String token) {
-//        return token.equals(mPreferencesManager.getSharedPreferences().getString(Constants.USER_AUTH_TOKEN, ""));
+//        return token.equals(mPreferencesManager.getSharedPreferences().getString(ConstantsManager.USER_AUTH_TOKEN, ""));
 //    }
 
 //    public ProductDto getProductById(int productId) {

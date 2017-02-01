@@ -101,6 +101,11 @@ public class CatalogScreen extends AbstractScreen<RootActivity.RootComponent> {
         }
 
         @Override
+        protected void initFab() {
+
+        }
+
+        @Override
         public void clickOnBuyButton(int position) {
 //            mCatalogModel.getProductObs()
 //                    .doOnNext(o -> Log.e("THREAD", "call: " + Thread.currentThread().getName()))

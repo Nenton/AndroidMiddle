@@ -25,6 +25,14 @@ public class CommentRealm extends RealmObject{
     public CommentRealm() {
     }
 
+    public CommentRealm(float raiting, String comment) {
+        this.id = String.valueOf(this.hashCode());
+        this.userName = "NoName"; // TODO: 27.01.2017 implement me
+        this.raiting = raiting;
+        this.commentDate = new Date();
+        this.comment = comment;
+    }
+
     public CommentRealm(ProductRes.Comment comment) {
         this.id = comment.getId();
         this.userName = comment.getUserName();

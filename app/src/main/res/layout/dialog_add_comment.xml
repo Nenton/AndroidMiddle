@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="@dimen/spacing_normal_16"
+    android:gravity="center">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/ProductText.ProductDescription"
+        android:text="Поставьте оценку данному товару"/>
+    <android.support.v7.widget.AppCompatRatingBar
+        android:id="@+id/comment_rb"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_normal_16"
+        android:layout_marginBottom="@dimen/spacing_normal_16"
+        />
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <EditText
+            android:id="@+id/comment_et"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Ваш комментарий"/>
+    </android.support.design.widget.TextInputLayout>
+
+</LinearLayout>

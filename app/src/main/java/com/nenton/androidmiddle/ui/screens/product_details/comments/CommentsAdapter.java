@@ -56,7 +56,12 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.Commen
         holder.dateTxt.setText(comment.getCommentDate());
         holder.rating.setRating(comment.getRating());
 
-        mPicasso.load(comment.getAvatarUri())
+        String urlAvatar = comment.getAvatarUri();
+        if (urlAvatar == null || urlAvatar.isEmpty()){
+            urlAvatar = "http://detkam.su/avatar/00/17/05426397.jpg";
+        }
+        mPicasso.load(urlAvatar)
+                .error(R.drawable.ic_account_24)
                 .fit()
                 .into(holder.commentAvatarImg);
 
@@ -65,6 +70,12 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.Commen
     @Override
     public int getItemCount() {
         return mCommentList.size();
+    }
+
+    public void reloadAdapter(List<CommentDto> commentDtos) {
+        mCommentList.clear();
+        mCommentList = commentDtos;
+        notifyDataSetChanged();
     }
 
     public class CommentViewHolder extends RecyclerView.ViewHolder {

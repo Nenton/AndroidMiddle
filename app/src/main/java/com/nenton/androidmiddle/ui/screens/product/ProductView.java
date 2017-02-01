@@ -67,7 +67,14 @@ public class ProductView extends AbstractView<ProductScreen.ProductPresenter> im
         mProductDescription.setText(product.getDescription());
         mProductCount.setText(String.valueOf(product.getCount()));
 
-        // TODO: 30.10.2016 picasso
+        if (product.getCount() > 0) {
+            mProductPrice.setText(String.valueOf(product.getCount() * product.getPrice() + ".-"));
+        } else {
+            mProductPrice.setText(String.valueOf(product.getPrice()));
+        }
+
+        mFavorite.setChecked(product.isFavorite());
+
         mPicasso.load(product.getUrlProduct())
                 .networkPolicy(NetworkPolicy.OFFLINE)
                 .fit()
@@ -87,11 +94,6 @@ public class ProductView extends AbstractView<ProductScreen.ProductPresenter> im
                     }
                 });
 
-        if (product.getCount() > 0) {
-            mProductPrice.setText(String.valueOf(product.getCount() * product.getPrice() + ".-"));
-        } else {
-            mProductPrice.setText(String.valueOf(product.getPrice()));
-        }
     }
 
     @Override

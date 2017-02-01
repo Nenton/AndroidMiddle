@@ -1,7 +1,7 @@
 package com.nenton.androidmiddle.data.network;
 
 import com.nenton.androidmiddle.data.network.res.ProductRes;
-import com.nenton.androidmiddle.utils.Constants;
+import com.nenton.androidmiddle.utils.ConstantsManager;
 
 import java.util.List;
 
@@ -13,5 +13,5 @@ import rx.Observable;
 public interface RestService {
 
     @GET("products")
-    Observable<Response<List<ProductRes>>> getProductResObs (@Header(Constants.IF_MODIFIED_SINCE_HEADER)String lastEntityUpdate);
+    Observable<Response<List<ProductRes>>> getProductResObs (@Header(ConstantsManager.IF_MODIFIED_SINCE_HEADER)String lastEntityUpdate);
 }
