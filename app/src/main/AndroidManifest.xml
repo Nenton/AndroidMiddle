@@ -14,7 +14,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        android:name=".utils.AndroidMiddleAplication">
+        android:name=".utils.App">
         <activity android:name=".ui.activities.RootActivity">
 
         </activity>

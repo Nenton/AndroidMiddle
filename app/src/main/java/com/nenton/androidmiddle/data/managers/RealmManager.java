@@ -1,5 +1,6 @@
 package com.nenton.androidmiddle.data.managers;
 
+import com.nenton.androidmiddle.data.network.res.Comment;
 import com.nenton.androidmiddle.data.network.res.ProductRes;
 import com.nenton.androidmiddle.data.storage.realm.CommentRealm;
 import com.nenton.androidmiddle.data.storage.realm.ProductRealm;
@@ -28,7 +29,7 @@ public class RealmManager {
                         if (!comment.isActive()){
                             deleteFromRealm(CommentRealm.class, comment.getId());
                         }})
-                    .filter(ProductRes.Comment::isActive)
+                    .filter(Comment::isActive)
                     .map(CommentRealm::new)
                     .subscribe(commentRealm -> productRealm.getCommentRealms().add(commentRealm));
 

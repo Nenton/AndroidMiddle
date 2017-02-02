@@ -3,6 +3,7 @@ package com.nenton.androidmiddle.mvp.models;
 import com.nenton.androidmiddle.data.storage.dto.UserAddressDto;
 import com.nenton.androidmiddle.data.storage.dto.UserInfoDto;
 import com.nenton.androidmiddle.data.storage.dto.UserSettingsDto;
+import com.nenton.androidmiddle.jobs.UploadAvatarJob;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -66,6 +67,11 @@ public class AccountModel extends AbstractModel{
     public void saveProfileInfo(UserInfoDto infoDto){
         mDataManager.saveProfileInfo(infoDto.getName(), infoDto.getPhone(), infoDto.getAvatar());
         mUserInfoObs.onNext(infoDto);
+
+        String uriAvatar = infoDto.getAvatar();
+        if (!uriAvatar.contains("http")){
+            uploadAvatarOnServer(uriAvatar);
+        }
     }
 
     public UserInfoDto getUserProfileInfo(){
@@ -77,6 +83,10 @@ public class AccountModel extends AbstractModel{
 
     public Observable<UserInfoDto> getUserInfoObs(){
         return mUserInfoObs;
+    }
+
+    private void uploadAvatarOnServer(String avatarUri){
+        mJobManager.addJobInBackground(new UploadAvatarJob(avatarUri));
     }
     //endregion
 

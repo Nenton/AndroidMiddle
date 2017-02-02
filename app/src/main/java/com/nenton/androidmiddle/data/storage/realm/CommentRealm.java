@@ -1,7 +1,10 @@
 package com.nenton.androidmiddle.data.storage.realm;
 
-import com.nenton.androidmiddle.data.network.res.ProductRes;
+import com.nenton.androidmiddle.data.managers.DataManager;
+import com.nenton.androidmiddle.data.managers.PreferencesManager;
+import com.nenton.androidmiddle.data.network.res.Comment;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import io.realm.RealmObject;
@@ -11,7 +14,7 @@ import io.realm.annotations.PrimaryKey;
  * Created by serge on 09.01.2017.
  */
 
-public class CommentRealm extends RealmObject{
+public class CommentRealm extends RealmObject implements Serializable{
 
     @PrimaryKey
     private String id;
@@ -27,13 +30,15 @@ public class CommentRealm extends RealmObject{
 
     public CommentRealm(float raiting, String comment) {
         this.id = String.valueOf(this.hashCode());
-        this.userName = "NoName"; // TODO: 27.01.2017 implement me
+        final PreferencesManager pm = DataManager.getInstance().getPreferencesManager();
+        this.userName = pm.getUserName();
+        this.avatar = pm.getUserPhoto();
         this.raiting = raiting;
         this.commentDate = new Date();
         this.comment = comment;
     }
 
-    public CommentRealm(ProductRes.Comment comment) {
+    public CommentRealm(Comment comment) {
         this.id = comment.getId();
         this.userName = comment.getUserName();
         this.avatar = comment.getAvatar();

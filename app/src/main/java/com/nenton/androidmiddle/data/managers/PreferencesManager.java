@@ -38,4 +38,18 @@ public class PreferencesManager {
     public ProductLocalInfo getLocalInfo(int remoteId) {
         return null;
     }
+
+    public void saveUserAvatar(String uri){
+        SharedPreferences.Editor editor = mSharedPreferences.edit();
+        editor.putString(PROFILE_AVATAR_KEY, uri);
+        editor.apply();
+    }
+
+    public String getUserName(){
+        return mSharedPreferences.getString(PROFILE_FULL_NAME_KEY, "NoName");
+    }
+
+    public String getUserPhoto(){
+        return mSharedPreferences.getString(PROFILE_AVATAR_KEY, "http://detkam.su/avatar/00/17/05426397.jpg");
+    }
 }

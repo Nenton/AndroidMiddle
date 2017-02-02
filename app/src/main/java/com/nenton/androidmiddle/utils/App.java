@@ -20,7 +20,7 @@ import io.realm.Realm;
 import mortar.MortarScope;
 import mortar.bundler.BundleServiceRunner;
 
-public class AndroidMiddleAplication extends Application {
+public class App extends Application {
 
     private static SharedPreferences sSharedPreferences;
     private static Context sContext;

@@ -12,7 +12,7 @@ import rx.Observable;
 
 public class NetworkStatusChecker {
     public static Boolean isNetworkAvailible(){
-        ConnectivityManager manager = (ConnectivityManager) AndroidMiddleAplication.getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        ConnectivityManager manager = (ConnectivityManager) App.getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = manager.getActiveNetworkInfo();
         return networkInfo != null && networkInfo.isConnectedOrConnecting();
     }

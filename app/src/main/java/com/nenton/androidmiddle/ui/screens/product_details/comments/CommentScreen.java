@@ -2,6 +2,7 @@ package com.nenton.androidmiddle.ui.screens.product_details.comments;
 
 import android.os.Bundle;
 
+import com.nenton.androidmiddle.BuildConfig;
 import com.nenton.androidmiddle.R;
 import com.nenton.androidmiddle.data.storage.dto.CommentDto;
 import com.nenton.androidmiddle.data.storage.realm.CommentRealm;
@@ -147,9 +148,16 @@ public class CommentScreen extends AbstractScreen<DetailsScreen.Component> {
         }
 
         public void addComment(CommentRealm comment) {
-            Realm realm = Realm.getDefaultInstance();
-            realm.executeTransaction(realm1 -> mProduct.getCommentRealms().add(comment));
-            realm.close();
+            switch (BuildConfig.FLAVOR){
+                case "base":
+                    mModel.sendComment(mProduct.getId(), comment);
+                    break;
+                case "realmMp":
+                    Realm realm = Realm.getDefaultInstance();
+                    realm.executeTransaction(realm1 -> mProduct.getCommentRealms().add(comment));
+                    realm.close();
+                    break;
+            }
         }
     }
 }

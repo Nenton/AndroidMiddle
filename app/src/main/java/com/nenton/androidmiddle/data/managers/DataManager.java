@@ -2,9 +2,12 @@ package com.nenton.androidmiddle.data.managers;
 
 
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import com.nenton.androidmiddle.data.network.RestCallTransformer;
 import com.nenton.androidmiddle.data.network.RestService;
+import com.nenton.androidmiddle.data.network.res.AvatarUrlRes;
+import com.nenton.androidmiddle.data.network.res.Comment;
 import com.nenton.androidmiddle.data.network.res.ProductRes;
 import com.nenton.androidmiddle.data.storage.dto.UserAddressDto;
 import com.nenton.androidmiddle.data.storage.realm.ProductRealm;
@@ -14,15 +17,20 @@ import com.nenton.androidmiddle.di.components.DaggerDataManagerComponent;
 import com.nenton.androidmiddle.di.components.DataManagerComponent;
 import com.nenton.androidmiddle.di.modules.LocalModule;
 import com.nenton.androidmiddle.di.modules.NetworkModule;
-import com.nenton.androidmiddle.utils.AndroidMiddleAplication;
+import com.nenton.androidmiddle.utils.App;
+import com.nenton.androidmiddle.utils.AppConfig;
+import com.nenton.androidmiddle.utils.NetworkStatusChecker;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
+import okhttp3.MultipartBody;
 import retrofit2.Retrofit;
 import rx.Observable;
 import rx.schedulers.Schedulers;
@@ -60,15 +68,31 @@ public class DataManager {
         DataManagerComponent component = DaggerService.getComponent(DataManagerComponent.class);
         if (component == null) {
             component = DaggerDataManagerComponent.builder()
-                    .appComponent(AndroidMiddleAplication.getAppComponent())
+                    .appComponent(App.getAppComponent())
                     .localModule(new LocalModule())
                     .networkModule(new NetworkModule())
                     .build();
             DaggerService.registerComponent(DataManagerComponent.class, component);
         }
         component.inject(this);
-//        mSharedPreferences = AndroidMiddleAplication.getSharedPreferences();
+//        mSharedPreferences = App.getSharedPreferences();
 //        generateProducts();
+
+        updateLocalDataWithTimer();// for example
+    }
+
+    private void updateLocalDataWithTimer() {
+        Observable.interval(AppConfig.UPDATE_DATA_INTERVAL, TimeUnit.SECONDS)
+                .flatMap(aLong -> NetworkStatusChecker.isInternetAvailible())
+                .filter(aBoolean -> aBoolean)
+                .flatMap(aBoolean -> getProductObsFromNetwork())
+                .subscribe(productRealm -> {
+                    Log.e(TAG, "LOCAL UPDATE complete: ");
+
+                }, throwable -> {
+                    Log.e(TAG, "LOCAL UPDATE error: " + throwable.getMessage());
+                });
+
     }
 
     public Observable<ProductRealm> getProductObsFromNetwork() {
@@ -85,28 +109,17 @@ public class DataManager {
                 })
                 .filter(ProductRes::isActive)
                 .doOnNext(productRes -> mRealmManager.saveProductResponseToRealm(productRes)
-                ) // пропускаю только активные товары
-//                .doOnCompleted(() -> {
-////                    generateProducts();
-//                })
-                .flatMap(productRes -> Observable.empty()); // по окончанию загрузки из сети генерируем MOCK DATA
+                )
+                .retryWhen(errorObservable ->
+                errorObservable
+                .zipWith(Observable.range(1, AppConfig.RETRY_REQUEST_COUNT), (throwable, retryCount) -> retryCount)
+                .doOnNext(retryCount -> Log.e(TAG, "LOCAL UPDATE request retry count: " + retryCount + " " + new Date()))
+                .map(retryCount -> ((long) (AppConfig.RETRY_REQUEST_BASE_DELAY * Math.pow(Math.E, retryCount))))
+                .doOnNext(delay -> Log.e(TAG, "LOCAL UPDATE delay: " + delay))
+                .flatMap(delay -> Observable.timer(delay, TimeUnit.MILLISECONDS)))
+                .flatMap(productRes -> Observable.empty());
     }
-//
-//    private void deleteFromOb(ProductRes productRes) {
-////        mPreferencesManager.mMockBD.deleteProduct(productRes);
-//    }
 
-//    @Nullable
-//    public List<ProductDto> fromDisk() {
-////        return mPreferencesManager.mMockBd.getProductList();
-//        return mProductDto;
-//    }
-//
-//    private void saveOnDisk(ProductRes productRes) {
-////        mPreferencesManager.mMockBD.updateOrInsert(productRes);
-//    }
-//
-//
 //    public String getAuthToken() {
 //        return mPreferencesManager.getSharedPreferences().getString(ConstantsManager.USER_AUTH_TOKEN, "");
 //    }
@@ -119,14 +132,6 @@ public class DataManager {
 //
 //    public boolean equalsToken(String token) {
 //        return token.equals(mPreferencesManager.getSharedPreferences().getString(ConstantsManager.USER_AUTH_TOKEN, ""));
-//    }
-
-//    public ProductDto getProductById(int productId) {
-//        return null;
-//    }
-//
-//    public void updateProduct(ProductDto product) {
-//
 //    }
 
 //    public List<ProductDto> getListProduct() {
@@ -151,6 +156,11 @@ public class DataManager {
 //        // TODO: 30.10.2016 auth user
 //        return mUserAuth;
 //    }
+
+    public Observable<Comment> sendComment(String productId, Comment comment) {
+        return mRestService.sendComment(productId, comment);
+
+    }
 
     public Map<String, String> getUserProfileInfo() {
         Map<String, String> profileInfo = new HashMap<>();
@@ -206,15 +216,12 @@ public class DataManager {
         return mRetrofit;
     }
 
-//    public Observable<ProductLocalInfo> getProductLocalInfoObs(ProductRes productRes) {
-//        return Observable.just(getPreferencesManager().getLocalInfo(productRes.getRemoteId()))
-//                .flatMap(productLocalInfo ->
-//                        productLocalInfo == null ?
-//                                Observable.just(new ProductLocalInfo()) :
-//                                Observable.just(productLocalInfo));
-//    }
 
     public Observable<ProductRealm> getProductFromRealm() {
         return mRealmManager.getAllProductFromRealm();
+    }
+
+    public Observable<AvatarUrlRes> uploadUserPhoto(MultipartBody.Part body) {
+        return mRestService.uploadUserAvatar(body);
     }
 }

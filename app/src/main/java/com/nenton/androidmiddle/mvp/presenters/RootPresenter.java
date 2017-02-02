@@ -1,10 +1,8 @@
 package com.nenton.androidmiddle.mvp.presenters;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -25,8 +23,7 @@ import com.nenton.androidmiddle.mvp.models.AccountModel;
 import com.nenton.androidmiddle.mvp.views.IRootView;
 import com.nenton.androidmiddle.ui.activities.RootActivity;
 import com.nenton.androidmiddle.ui.activities.SplashActivity;
-import com.nenton.androidmiddle.ui.custom_views.FloatActionButtonCustom;
-import com.nenton.androidmiddle.utils.AndroidMiddleAplication;
+import com.nenton.androidmiddle.utils.App;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,7 +51,7 @@ public class RootPresenter extends Presenter<IRootView> {
     FloatingActionButton mButton;
 
     public RootPresenter() {
-        AndroidMiddleAplication.getRootActivityRootComponent().inject(this);
+        App.getRootActivityRootComponent().inject(this);
     }
 
     @Override
