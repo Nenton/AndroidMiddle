@@ -2,6 +2,8 @@ package com.nenton.androidmiddle.ui.screens.auth;
 
 import android.content.Context;
 import android.support.v7.widget.CardView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.animation.Animation;
@@ -15,6 +17,7 @@ import android.widget.RelativeLayout;
 import com.nenton.androidmiddle.R;
 import com.nenton.androidmiddle.di.DaggerService;
 import com.nenton.androidmiddle.mvp.views.IAuthView;
+import com.nenton.androidmiddle.utils.ConstantsManager;
 
 import java.util.List;
 
@@ -36,26 +39,21 @@ public class AuthView extends RelativeLayout implements IAuthView {
 
     @BindViews({R.id.vk_btn, R.id.fb_btn, R.id.twitter_btn})
     List<ImageButton> mImageButtons;
-
     @BindView(R.id.show_catalog_btn)
     Button mCatalogBtn;
-
     @BindView(R.id.login_btn)
     Button mLoginBtn;
-
     @BindView(R.id.auth_card)
     CardView mCardView;
-
     @BindView(R.id.progress_bar)
     ProgressBar mProgressBar;
-
     @BindView(R.id.login_email_et)
     EditText mEmailEt;
-
     @BindView(R.id.login_password_et)
     EditText mPasswordEt;
 
     private AuthScreen mAuthScreen;
+    private boolean validateEmail, validatePassword;
 
     public AuthView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -64,7 +62,6 @@ public class AuthView extends RelativeLayout implements IAuthView {
             DaggerService.<AuthScreen.Component>getDaggerComponent(context).inject(this);
         }
     }
-
 
     private void showViewFromState() {
         if (mAuthScreen.getCustomState() == LOGIN_STATE) {
@@ -77,6 +74,7 @@ public class AuthView extends RelativeLayout implements IAuthView {
     private void showLoginState() {
         animationVisible(mCardView);
         animationGone(mCatalogBtn);
+        mLoginBtn.setEnabled(false);
     }
 
     private void showIdleState() {
@@ -100,8 +98,53 @@ public class AuthView extends RelativeLayout implements IAuthView {
     protected void onFinishInflate() {
         super.onFinishInflate();
         ButterKnife.bind(this);
+        addValidateFields();
         if (!isInEditMode()) {
             showViewFromState();
+        }
+    }
+
+    private void addValidateFields() {
+
+        mEmailEt.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                validateEmail = s.toString().matches(ConstantsManager.REG_EXP_EMAIL);
+                isValidateField();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
+
+        mPasswordEt.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                validatePassword = s.length() >= 8 && s.toString().matches(ConstantsManager.REG_EXP_PASSWORD);
+                isValidateField();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
+    }
+
+    private void isValidateField() {
+        if (validateEmail && validatePassword) {
+            mLoginBtn.setEnabled(true);
+        } else {
+            mLoginBtn.setEnabled(false);
         }
     }
 
@@ -127,8 +170,6 @@ public class AuthView extends RelativeLayout implements IAuthView {
     @OnClick(R.id.vk_btn)
     public void vkClick() {
         mAuthPresenter.clickOnVk();
-        Animation animation = AnimationUtils.loadAnimation(getContext(), R.anim.fade_in);
-        mImageButtons.get(0).startAnimation(animation);
     }
 
     @OnClick(R.id.fb_btn)
@@ -191,11 +232,11 @@ public class AuthView extends RelativeLayout implements IAuthView {
         showViewFromState();
     }
 
-
     @Override
     public boolean viewOnBackPressed() {
         if (!isIdle()) {
             setCustomState(IDLE_STATE);
+            mLoginBtn.setEnabled(true);
             return true;
         } else {
             return false;

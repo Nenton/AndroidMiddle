@@ -90,9 +90,10 @@ public class AuthScreen extends AbstractScreen<RootActivity.RootComponent> {
         protected void onLoad(Bundle savedInstanceState) {
             super.onLoad(savedInstanceState);
 
-            if (getView()!=null){
+            if (getView() != null && getRootView() != null){
                 if (checkUserAuth()){
-                    getView().hideLoginBtn();
+                    ((SplashActivity) getRootView()).startRootActivity();
+//                    getView().hideLoginBtn();
                 } else {
                     getView().showLoginBtn();
                 }
@@ -108,7 +109,6 @@ public class AuthScreen extends AbstractScreen<RootActivity.RootComponent> {
         public void clickOnVk() {
             if (getRootView() != null) {
                 getRootView().showMessage("VK");
-
             }
         }
 
@@ -132,10 +132,9 @@ public class AuthScreen extends AbstractScreen<RootActivity.RootComponent> {
                 if (getView().isIdle()){
                     getView().setCustomState(AuthView.LOGIN_STATE);
                 } else {
-                    // TODO: 21.10.2016 авторизация
-                    if (true){
-                        mAuthModel.loginUser(getView().getUserEmail(), getView().getUserPassword());
-                        getRootView().showMessage("Запрос авторизации пользователя");
+                    if (mAuthModel.loginUser(getView().getUserEmail(), getView().getUserPassword())){
+                        ((SplashActivity) getRootView()).startRootActivity();
+//                        getRootView().showMessage("Запрос авторизации пользователя");
                     } else {
                         getRootView().showMessage("Введите корректные данные");
                     }

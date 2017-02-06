@@ -224,4 +224,9 @@ public class DataManager {
     public Observable<AvatarUrlRes> uploadUserPhoto(MultipartBody.Part body) {
         return mRestService.uploadUserAvatar(body);
     }
+
+    public boolean isUserAuth(String token) {
+        // TODO: 06.02.2017 rest запрос к серверу о валидности токена
+        return true;
+    }
 }

@@ -86,7 +86,6 @@ public class AccountView extends CoordinatorLayout implements IAccountView {
     protected void onFinishInflate() {
         super.onFinishInflate();
         ButterKnife.bind(this);
-
     }
 
     private void showViewFromState() {
@@ -95,7 +94,6 @@ public class AccountView extends CoordinatorLayout implements IAccountView {
         } else {
             showEditState();
         }
-
     }
 
     @Override
@@ -144,8 +142,12 @@ public class AccountView extends CoordinatorLayout implements IAccountView {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setTitle("Перейти к редактированию адресса")
                 .setMessage("Вы действительно хотите редактировать адресс?")
-                .setPositiveButton("Редактировать", (dialog, which) -> {mPresenter.editAddress(position);})
-                .setNegativeButton("Отмена", (dialog, which) -> {dialog.cancel();})
+                .setPositiveButton("Редактировать", (dialog, which) -> {
+                    mPresenter.editAddress(position);
+                })
+                .setNegativeButton("Отмена", (dialog, which) -> {
+                    dialog.cancel();
+                })
                 .setOnCancelListener(dialog -> mAddressesAdapter.notifyDataSetChanged())
                 .show();
     }
@@ -154,8 +156,12 @@ public class AccountView extends CoordinatorLayout implements IAccountView {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setTitle("Удаление адресса")
                 .setMessage("Вы действительно хотите удалить адресс?")
-                .setPositiveButton("Удалить", (dialog, which) -> {mPresenter.removeAddress(position);})
-                .setNegativeButton("Отмена", (dialog, which) -> {dialog.cancel();})
+                .setPositiveButton("Удалить", (dialog, which) -> {
+                    mPresenter.removeAddress(position);
+                })
+                .setNegativeButton("Отмена", (dialog, which) -> {
+                    dialog.cancel();
+                })
                 .setOnCancelListener(dialog -> mAddressesAdapter.notifyDataSetChanged())
                 .show();
     }
@@ -214,7 +220,7 @@ public class AccountView extends CoordinatorLayout implements IAccountView {
         mProfileNameWrapper.setVisibility(GONE);
         mUserFullNameET.removeTextChangedListener(mWatcher);
         mUserPhoneET.setEnabled(false);
-        if (mAvatarUri != null){
+        if (mAvatarUri != null) {
             insertAvatar();
         }
     }
@@ -286,7 +292,7 @@ public class AccountView extends CoordinatorLayout implements IAccountView {
         mProfileNameTxt.setText(infoDto.getName());
         mUserFullNameET.setText(infoDto.getName());
         mUserPhoneET.setText(infoDto.getPhone());
-        if (mAccountScreen.getmCustomState() == PREVIEW_STATE){
+        if (mAccountScreen.getmCustomState() == PREVIEW_STATE) {
             mAvatarUri = Uri.parse(infoDto.getAvatar());
             insertAvatar();
         }
@@ -307,8 +313,8 @@ public class AccountView extends CoordinatorLayout implements IAccountView {
     }
 
     @OnClick(R.id.user_avatar_img)
-    void clickChangeAvatar(){
-        if (mAccountScreen.getmCustomState() == EDIT_STATE){
+    void clickChangeAvatar() {
+        if (mAccountScreen.getmCustomState() == EDIT_STATE) {
             mPresenter.takePhoto();
         }
     }

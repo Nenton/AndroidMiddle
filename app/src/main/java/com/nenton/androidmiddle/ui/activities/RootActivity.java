@@ -15,6 +15,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -42,6 +43,7 @@ import com.nenton.androidmiddle.mvp.views.IView;
 
 import com.nenton.androidmiddle.ui.screens.account.AccountScreen;
 import com.nenton.androidmiddle.ui.screens.catalog.CatalogScreen;
+import com.nenton.androidmiddle.utils.App;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -208,7 +210,12 @@ public class RootActivity extends AppCompatActivity implements IRootView, Naviga
     @Override
     public void onBackPressed() {
         if (getCurrentScreen() != null && !getCurrentScreen().viewOnBackPressed() && !Flow.get(this).goBack()){
-            super.onBackPressed();
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Выход")
+                    .setPositiveButton("Да", (dialog, which) -> super.onBackPressed())
+                    .setNegativeButton("Нет", (dialog, which) -> dialog.cancel())
+                    .setMessage("Вы действительно хотите выйти?")
+                    .show();
         }
     }
 

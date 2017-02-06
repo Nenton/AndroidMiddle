@@ -1,16 +1,20 @@
 package com.nenton.androidmiddle.mvp.models;
 
-public class AuthModel {
+public class AuthModel extends AbstractModel{
 
     public AuthModel() {
     }
 
     public boolean isUserAuth(){
-        // TODO: 21.10.2016 Проверка на аутентификацию
-        return false;
+        if (!mDataManager.getPreferencesManager().getToken().isEmpty()){
+            return mDataManager.isUserAuth(mDataManager.getPreferencesManager().getToken());
+        } else {
+            return false;
+        }
     }
 
-    public void loginUser(String email, String password){
+    public boolean loginUser(String email, String password){
+        return true;
         // TODO: 21.10.2016 Вход пользователя
     }
 }

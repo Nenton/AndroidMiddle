@@ -15,6 +15,7 @@ public class PreferencesManager {
     public static final String NOTIFICATION_PROMO_KEY = "NOTIFICATION_PROMO_KEY";
     public static final String NOTIFICATION_ORDER_KEY = "NOTIFICATION_ORDER_KEY";
     private static final String PRODUCT_LAST_UPDATE_KEY = "PRODUCT_LAST_UPDATE_KEY";
+    private static final String TOKEN_KEY = "TOKEN_KEY";
     private final SharedPreferences mSharedPreferences;
 
     public SharedPreferences getSharedPreferences() {
@@ -52,4 +53,22 @@ public class PreferencesManager {
     public String getUserPhoto(){
         return mSharedPreferences.getString(PROFILE_AVATAR_KEY, "http://detkam.su/avatar/00/17/05426397.jpg");
     }
+
+    //region ========================= TOKEN =========================
+
+    public void saveToken(String token){
+        SharedPreferences.Editor editor = mSharedPreferences.edit();
+        editor.putString(TOKEN_KEY, token);
+        editor.apply();
+    }
+
+    public String getToken(){
+        return mSharedPreferences.getString(TOKEN_KEY,"");
+    }
+
+    public boolean isValidateToken(String token){
+        return mSharedPreferences.getString(TOKEN_KEY, "").equals(token);
+    }
+
+    //endregion
 }

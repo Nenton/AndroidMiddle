@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.FrameLayout;
@@ -54,7 +55,6 @@ public class SplashActivity extends AppCompatActivity implements IRootView {
         BundleServiceRunner.getBundleServiceRunner(this).onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
         ButterKnife.bind(this);
-
         DaggerService.<RootActivity.RootComponent>getDaggerComponent(this).inject(this);
     }
 
@@ -146,7 +146,12 @@ public class SplashActivity extends AppCompatActivity implements IRootView {
     @Override
     public void onBackPressed() {
         if (getCurrentScreen() != null && !getCurrentScreen().viewOnBackPressed() && !Flow.get(this).goBack()){
-            super.onBackPressed();
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Выход")
+                    .setPositiveButton("Да", (dialog, which) -> super.onBackPressed())
+                    .setNegativeButton("Нет", (dialog, which) -> dialog.cancel())
+                    .setMessage("Вы действительно хотите выйти?")
+                    .show();
         }
     }
 
