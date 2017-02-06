@@ -15,7 +15,7 @@ import android.view.View;
 import com.nenton.androidmiddle.R;
 
 /**
- * Created by kefir on 28.11.2016.
+ * Created by SUPER DEVELOPER IN SKILLBRANCH ANDROID MIDDLE kefir on 28.11.2016.
  */
 
 // TODO: 01.12.2016 add inner shadow
