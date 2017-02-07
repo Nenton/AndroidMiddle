@@ -80,7 +80,6 @@ public class AuthScreen extends AbstractScreen<RootActivity.RootComponent> {
             if (getView() != null && getRootView() != null){
                 if (checkUserAuth()){
                     Flow.get(getView()).set(new CatalogScreen());
-//                    ((SplashActivity) getRootView()).startRootActivity();
 //                    getView().hideLoginBtn();
                 } else {
                     getView().showLoginBtn();
@@ -135,7 +134,6 @@ public class AuthScreen extends AbstractScreen<RootActivity.RootComponent> {
                 } else {
                     if (mAuthModel.loginUser(getView().getUserEmail(), getView().getUserPassword())){
                         Flow.get(getView()).set(new CatalogScreen());
-//                        ((SplashActivity) getRootView()).startRootActivity();
 //                        getRootView().showMessage("Запрос авторизации пользователя");
                     } else {
                         getRootView().showMessage("Введите корректные данные");
@@ -149,11 +147,6 @@ public class AuthScreen extends AbstractScreen<RootActivity.RootComponent> {
             if (getView() != null) {
                 getRootView().showMessage("Показать каталог");
                 Flow.get(getView()).set(new CatalogScreen());
-//                if (getRootView() instanceof SplashActivity){
-////                    ((SplashActivity) getRootView()).startRootActivity();
-//                } else {
-//                    // TODO: 01.12.2016 show catalog screen
-//                }
             }
         }
 

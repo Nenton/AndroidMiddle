@@ -22,7 +22,6 @@ import com.nenton.androidmiddle.mvp.models.AccountModel;
 import com.nenton.androidmiddle.mvp.presenters.AbstractPresenter;
 import com.nenton.androidmiddle.mvp.presenters.IAccountPresenter;
 import com.nenton.androidmiddle.mvp.presenters.RootPresenter;
-import com.nenton.androidmiddle.mvp.presenters.SubscribePresenter;
 import com.nenton.androidmiddle.mvp.views.IRootView;
 import com.nenton.androidmiddle.ui.activities.RootActivity;
 import com.nenton.androidmiddle.ui.screens.address.AddressScreen;
@@ -152,7 +151,7 @@ public class AccountScreen extends AbstractScreen<RootActivity.RootComponent> {
         protected void onSave(Bundle outState) {
             super.onSave(outState);
             addressSubscription.unsubscribe();
-            settingsSubscription.unsubscribe();
+            settingsSubscription.unsubscribe(); // TODO: 07.02.2017 fix me nullpointerexception onfinish
             mUserInfoObs.unsubscribe();
         }
 
