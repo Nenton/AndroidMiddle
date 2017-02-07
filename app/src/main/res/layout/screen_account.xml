@@ -5,171 +5,176 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ImageView
+    <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/spacing_big_48"
-        android:background="@color/colorAccent"
-        app:layout_anchor="@+id/account_user_profile_photo"
-        app:layout_anchorGravity="bottom"/>
+        android:layout_height="match_parent">
 
-    <android.support.design.widget.AppBarLayout
-        android:id="@+id/appbar_account"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay">
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/spacing_big_48"
+            android:background="@color/colorAccent"
+            app:layout_anchor="@+id/account_user_profile_photo"
+            app:layout_anchorGravity="bottom"/>
 
-        <android.support.design.widget.CollapsingToolbarLayout
-            android:id="@+id/account_user_profile_photo"
+        <android.support.design.widget.AppBarLayout
+            android:id="@+id/appbar_account"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/drawer_header"
-            app:contentScrim="@color/colorAccent"
-            app:layout_scrollFlags="scroll|snap">
+            android:theme="@style/AppTheme.AppBarOverlay">
 
-            <TextView
-                android:id="@+id/profile_name_txt"
-                android:layout_width="wrap_content"
+            <android.support.design.widget.CollapsingToolbarLayout
+                android:id="@+id/account_user_profile_photo"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal|top"
-                android:layout_marginTop="@dimen/spacing_big_48"
-                android:fontFamily="@string/roboto_regular"
-                android:text="Сусев Сергей"
-                android:textColor="@color/white"
-                android:textSize="32sp"/>
-        </android.support.design.widget.CollapsingToolbarLayout>
-    </android.support.design.widget.AppBarLayout>
+                android:background="@drawable/drawer_header"
+                app:contentScrim="@color/colorAccent"
+                app:layout_scrollFlags="scroll|snap">
 
-    <android.support.v4.widget.NestedScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:behavior_overlapTop="30dp"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+                <TextView
+                    android:id="@+id/profile_name_txt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal|top"
+                    android:layout_marginTop="@dimen/spacing_big_48"
+                    android:fontFamily="@string/roboto_regular"
+                    android:text="Сусев Сергей"
+                    android:textColor="@color/white"
+                    android:textSize="32sp"/>
+            </android.support.design.widget.CollapsingToolbarLayout>
+        </android.support.design.widget.AppBarLayout>
 
-        <LinearLayout
+        <android.support.v4.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/white"
-            android:orientation="vertical"
-            android:paddingBottom="@dimen/spacing_small_8"
-            android:paddingTop="@dimen/spacing_small_8">
+            app:behavior_overlapTop="30dp"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
             <LinearLayout
-                android:id="@+id/profile_name_wrapper"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="70dp"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:padding="@dimen/spacing_small_8">
+                android:layout_height="match_parent"
+                android:background="@color/white"
+                android:orientation="vertical"
+                android:paddingBottom="@dimen/spacing_small_8"
+                android:paddingTop="@dimen/spacing_small_8">
 
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:layout_marginRight="16dp"
-                    android:src="@drawable/ic_call_24dp"/>
-
-                <android.support.design.widget.TextInputLayout
+                <LinearLayout
+                    android:id="@+id/profile_name_wrapper"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="70dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/spacing_small_8">
 
-                    <EditText
-                        android:id="@+id/user_full_name_et"
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_marginRight="16dp"
+                        android:src="@drawable/ic_call_24dp"/>
+
+                    <android.support.design.widget.TextInputLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Имя пользователя"
-                        android:text="фамилия имя"/>
+                        android:layout_height="wrap_content">
 
-                </android.support.design.widget.TextInputLayout>
-            </LinearLayout>
+                        <EditText
+                            android:id="@+id/user_full_name_et"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Имя пользователя"
+                            android:text="фамилия имя"/>
 
-            <LinearLayout
-                android:id="@+id/profile_phone_wrapper"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="70dp"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:padding="@dimen/spacing_small_8">
+                    </android.support.design.widget.TextInputLayout>
+                </LinearLayout>
 
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:layout_marginRight="16dp"
-                    android:src="@drawable/ic_call_24dp"/>
-
-                <android.support.design.widget.TextInputLayout
+                <LinearLayout
+                    android:id="@+id/profile_phone_wrapper"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="70dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/spacing_small_8">
 
-                    <EditText
-                        android:id="@+id/user_phone_et"
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_marginRight="16dp"
+                        android:src="@drawable/ic_call_24dp"/>
+
+                    <android.support.design.widget.TextInputLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Телефон"
-                        android:inputType="phone"
-                        android:text="+7-123-456-78-90"/>
-                </android.support.design.widget.TextInputLayout>
+                        android:layout_height="wrap_content">
+
+                        <EditText
+                            android:id="@+id/user_phone_et"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Телефон"
+                            android:inputType="phone"
+                            android:text="+7-123-456-78-90"/>
+                    </android.support.design.widget.TextInputLayout>
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/greyLight"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Адресса доставки"/>
+
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/address_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+                <Button
+                    android:id="@+id/add_address_btn"
+                    style="@style/CustomButton"
+                    android:layout_marginBottom="@dimen/spacing_normal_16"
+                    android:layout_marginTop="@dimen/spacing_small_8"
+                    android:background="@color/colorAccent"
+                    android:text="Добавить адресс"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/greyLight"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/spacing_small_8"
+                    android:text="Push-уведомления"/>
+
+                <android.support.v7.widget.SwitchCompat
+                    android:id="@+id/notification_order_sw"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Уведомлять об акциях и спец предложениях"/>
+
+                <android.support.v7.widget.SwitchCompat
+                    android:id="@+id/notification_promo_sw"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Уведомлять об акциях и спец предложениях"/>
+
             </LinearLayout>
+        </android.support.v4.widget.NestedScrollView>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/greyLight"/>
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/user_avatar_img"
+            android:layout_width="135dp"
+            android:layout_height="135dp"
+            android:layout_gravity="center_horizontal|top"
+            android:elevation="8dp"
+            android:src="@drawable/firebase"
+            app:civ_border_color="@android:color/white"
+            app:civ_border_width="2dp"
+            app:layout_behavior=".utils.Behavior"/>
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Адресса доставки"/>
-
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/address_list"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-
-            <Button
-                android:id="@+id/add_address_btn"
-                style="@style/CustomButton"
-                android:layout_marginBottom="@dimen/spacing_normal_16"
-                android:layout_marginTop="@dimen/spacing_small_8"
-                android:background="@color/colorAccent"
-                android:text="Добавить адресс"/>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/greyLight"/>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/spacing_small_8"
-                android:text="Push-уведомления"/>
-
-            <android.support.v7.widget.SwitchCompat
-                android:id="@+id/notification_order_sw"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Уведомлять об акциях и спец предложениях"/>
-
-            <android.support.v7.widget.SwitchCompat
-                android:id="@+id/notification_promo_sw"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Уведомлять об акциях и спец предложениях"/>
-
-        </LinearLayout>
-    </android.support.v4.widget.NestedScrollView>
-
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/user_avatar_img"
-        android:layout_width="135dp"
-        android:layout_height="135dp"
-        android:layout_gravity="center_horizontal|top"
-        android:elevation="8dp"
-        android:src="@drawable/firebase"
-        app:civ_border_color="@android:color/white"
-        app:civ_border_width="2dp"
-        app:layout_behavior=".utils.Behavior"/>
-
+    </android.support.design.widget.CoordinatorLayout>
 </com.nenton.androidmiddle.ui.screens.account.AccountView>

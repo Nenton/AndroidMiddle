@@ -16,6 +16,7 @@ import android.widget.RelativeLayout;
 
 import com.nenton.androidmiddle.R;
 import com.nenton.androidmiddle.di.DaggerService;
+import com.nenton.androidmiddle.mvp.views.AbstractView;
 import com.nenton.androidmiddle.mvp.views.IAuthView;
 import com.nenton.androidmiddle.utils.ConstantsManager;
 
@@ -29,7 +30,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import flow.Flow;
 
-public class AuthView extends RelativeLayout implements IAuthView {
+public class AuthView extends AbstractView<AuthScreen.AuthPresenter> implements IAuthView {
 
     public static final int LOGIN_STATE = 0;
     public static final int IDLE_STATE = 1;
@@ -52,19 +53,20 @@ public class AuthView extends RelativeLayout implements IAuthView {
     @BindView(R.id.login_password_et)
     EditText mPasswordEt;
 
-    private AuthScreen mAuthScreen;
     private boolean validateEmail, validatePassword;
 
     public AuthView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        if (!isInEditMode()) {
-            mAuthScreen = Flow.getKey(this);
-            DaggerService.<AuthScreen.Component>getDaggerComponent(context).inject(this);
-        }
+
+    }
+
+    @Override
+    protected void initDagger(Context context) {
+        DaggerService.<AuthScreen.Component>getDaggerComponent(context).inject(this);
     }
 
     private void showViewFromState() {
-        if (mAuthScreen.getCustomState() == LOGIN_STATE) {
+        if (mPresenter.getCustomState() == LOGIN_STATE) {
             showLoginState();
         } else {
             showIdleState();
@@ -148,23 +150,6 @@ public class AuthView extends RelativeLayout implements IAuthView {
         }
     }
 
-
-    @Override
-    protected void onAttachedToWindow() {
-        super.onAttachedToWindow();
-        if (!isInEditMode()) {
-            mAuthPresenter.takeView(this);
-        }
-    }
-
-    @Override
-    protected void onDetachedFromWindow() {
-        super.onDetachedFromWindow();
-        if (!isInEditMode()) {
-            mAuthPresenter.dropView(this);
-        }
-    }
-
     //region ========================= Events =========================
 
     @OnClick(R.id.vk_btn)
@@ -223,12 +208,12 @@ public class AuthView extends RelativeLayout implements IAuthView {
 
     @Override
     public boolean isIdle() {
-        return mAuthScreen.getCustomState() == IDLE_STATE;
+        return mPresenter.getCustomState() == IDLE_STATE;
     }
 
     @Override
     public void setCustomState(int state) {
-        mAuthScreen.setCustomState(state);
+        mPresenter.setCustomState(state);
         showViewFromState();
     }
 

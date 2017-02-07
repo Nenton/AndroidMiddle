@@ -9,15 +9,17 @@ import com.nenton.androidmiddle.di.sqopes.AuthScope;
 import com.nenton.androidmiddle.flow.AbstractScreen;
 import com.nenton.androidmiddle.flow.Screen;
 import com.nenton.androidmiddle.mvp.models.AuthModel;
+import com.nenton.androidmiddle.mvp.presenters.AbstractPresenter;
 import com.nenton.androidmiddle.mvp.presenters.IAuthPresenter;
 import com.nenton.androidmiddle.mvp.presenters.RootPresenter;
 import com.nenton.androidmiddle.mvp.views.IRootView;
 import com.nenton.androidmiddle.ui.activities.RootActivity;
-import com.nenton.androidmiddle.ui.activities.SplashActivity;
+import com.nenton.androidmiddle.ui.screens.catalog.CatalogScreen;
 
 import javax.inject.Inject;
 
 import dagger.Provides;
+import flow.Flow;
 import mortar.MortarScope;
 import mortar.ViewPresenter;
 
@@ -25,22 +27,12 @@ import mortar.ViewPresenter;
 public class AuthScreen extends AbstractScreen<RootActivity.RootComponent> {
 
 
-    private int mCustomState;
-
     @Override
     public Object createScreenComponent(RootActivity.RootComponent parentRootComponent) {
         return DaggerAuthScreen_Component.builder()
                 .rootComponent(parentRootComponent)
                 .module(new Module())
                 .build();
-    }
-
-    public int getCustomState() {
-        return mCustomState;
-    }
-
-    public void setCustomState(int customState) {
-        mCustomState = customState;
     }
 
     //region ========================= DI =========================
@@ -72,19 +64,14 @@ public class AuthScreen extends AbstractScreen<RootActivity.RootComponent> {
 
     //region ========================= Presenter =========================
 
-    public class AuthPresenter extends ViewPresenter<AuthView> implements IAuthPresenter {
+    public class AuthPresenter extends AbstractPresenter<AuthView, AuthModel> implements IAuthPresenter {
 
         @Inject
         AuthModel mAuthModel;
-
         @Inject
         RootPresenter mRootPresenter;
 
-        @Override
-        protected void onEnterScope(MortarScope scope) {
-            super.onEnterScope(scope);
-            ((Component)scope.getService(DaggerService.SERVICE_NAME)).inject(this);
-        }
+        private int mCustomState;
 
         @Override
         protected void onLoad(Bundle savedInstanceState) {
@@ -92,7 +79,8 @@ public class AuthScreen extends AbstractScreen<RootActivity.RootComponent> {
 
             if (getView() != null && getRootView() != null){
                 if (checkUserAuth()){
-                    ((SplashActivity) getRootView()).startRootActivity();
+                    Flow.get(getView()).set(new CatalogScreen());
+//                    ((SplashActivity) getRootView()).startRootActivity();
 //                    getView().hideLoginBtn();
                 } else {
                     getView().showLoginBtn();
@@ -100,9 +88,22 @@ public class AuthScreen extends AbstractScreen<RootActivity.RootComponent> {
             }
         }
 
-        @Nullable
-        private IRootView getRootView(){
-            return mRootPresenter.getRootView();
+        @Override
+        protected void initActionBar() {
+            mRootPresenter.newActionBarBuilder()
+                    .setVisable(false)
+                    .setTitle("Авторизация")
+                    .build();
+        }
+
+        @Override
+        protected void initFab() {
+
+        }
+
+        @Override
+        protected void initDagger(MortarScope scope) {
+            ((Component)scope.getService(DaggerService.SERVICE_NAME)).inject(this);
         }
 
         @Override
@@ -133,7 +134,8 @@ public class AuthScreen extends AbstractScreen<RootActivity.RootComponent> {
                     getView().setCustomState(AuthView.LOGIN_STATE);
                 } else {
                     if (mAuthModel.loginUser(getView().getUserEmail(), getView().getUserPassword())){
-                        ((SplashActivity) getRootView()).startRootActivity();
+                        Flow.get(getView()).set(new CatalogScreen());
+//                        ((SplashActivity) getRootView()).startRootActivity();
 //                        getRootView().showMessage("Запрос авторизации пользователя");
                     } else {
                         getRootView().showMessage("Введите корректные данные");
@@ -146,17 +148,25 @@ public class AuthScreen extends AbstractScreen<RootActivity.RootComponent> {
         public void clickOnShowCatalog() {
             if (getView() != null) {
                 getRootView().showMessage("Показать каталог");
-                if (getRootView() instanceof SplashActivity){
-                    ((SplashActivity) getRootView()).startRootActivity();
-                } else {
-                    // TODO: 01.12.2016 show catalog screen
-                }
+                Flow.get(getView()).set(new CatalogScreen());
+//                if (getRootView() instanceof SplashActivity){
+////                    ((SplashActivity) getRootView()).startRootActivity();
+//                } else {
+//                    // TODO: 01.12.2016 show catalog screen
+//                }
             }
         }
 
         @Override
         public boolean checkUserAuth() {
             return mAuthModel.isUserAuth();
+        }
+        public int getCustomState() {
+            return mCustomState;
+        }
+
+        public void setCustomState(int customState) {
+            mCustomState = customState;
         }
     }
 

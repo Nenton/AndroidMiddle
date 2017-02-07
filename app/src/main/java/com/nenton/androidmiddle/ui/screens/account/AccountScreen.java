@@ -19,6 +19,7 @@ import com.nenton.androidmiddle.di.sqopes.AccountScope;
 import com.nenton.androidmiddle.flow.AbstractScreen;
 import com.nenton.androidmiddle.flow.Screen;
 import com.nenton.androidmiddle.mvp.models.AccountModel;
+import com.nenton.androidmiddle.mvp.presenters.AbstractPresenter;
 import com.nenton.androidmiddle.mvp.presenters.IAccountPresenter;
 import com.nenton.androidmiddle.mvp.presenters.RootPresenter;
 import com.nenton.androidmiddle.mvp.presenters.SubscribePresenter;
@@ -48,20 +49,10 @@ import static java.text.DateFormat.MEDIUM;
 @Screen(R.layout.screen_account)
 public class AccountScreen extends AbstractScreen<RootActivity.RootComponent> {
 
-    private int mCustomState = 1;
-
     private Subscription addressSubscription;
     private Subscription settingsSubscription;
     private File mPhotoFile;
     private Subscription mActivityResultSub;
-
-    public int getmCustomState() {
-        return mCustomState;
-    }
-
-    public void setmCustomState(int mCustomState) {
-        this.mCustomState = mCustomState;
-    }
 
     @Override
     public Object createScreenComponent(RootActivity.RootComponent parentComponent) {
@@ -87,12 +78,11 @@ public class AccountScreen extends AbstractScreen<RootActivity.RootComponent> {
     @dagger.Component(dependencies = RootActivity.RootComponent.class, modules = Module.class)
     @AccountScope
     public interface Component {
-        void inject(AccountPresenter accountPresenter);
 
+        void inject(AccountPresenter accountPresenter);
         void inject(AccountView accountView);
 
         RootPresenter getRootPresenter();
-
         AccountModel getAccountModel();
     }
 
@@ -101,7 +91,7 @@ public class AccountScreen extends AbstractScreen<RootActivity.RootComponent> {
     //region ========================= Presenter =========================
 
 
-    public class AccountPresenter extends SubscribePresenter<AccountView> implements IAccountPresenter {
+    public class AccountPresenter extends AbstractPresenter<AccountView, AccountModel> implements IAccountPresenter {
 
         @Inject
         RootPresenter mRootPresenter;
@@ -110,14 +100,17 @@ public class AccountScreen extends AbstractScreen<RootActivity.RootComponent> {
         private Uri mAvatarUri;
         private Subscription mUserInfoObs;
 
+
+        private int mCustomState = 1;
+
         //region ========================= LifeCycle =========================
 
-        @Override
-        protected void onEnterScope(MortarScope scope) {
-            super.onEnterScope(scope);
-            ((Component) scope.getService(DaggerService.SERVICE_NAME)).inject(this);
-            subscribeOnAddressObs();
-        }
+//        @Override
+//        protected void onEnterScope(MortarScope scope) {
+//            super.onEnterScope(scope);
+//            ((Component) scope.getService(DaggerService.SERVICE_NAME)).inject(this);
+//            subscribeOnAddressObs();
+//        }
 
         @Override
         protected void onLoad(Bundle savedInstanceState) {
@@ -128,6 +121,31 @@ public class AccountScreen extends AbstractScreen<RootActivity.RootComponent> {
             subscribeOnAddressObs();
             subscribeOnActivityResult();
             subscribeOnUserInfoObs();
+            // TODO: 07.02.2017 убрать onLoad
+        }
+
+        @Override
+        protected void initActionBar() {
+
+        }
+
+        @Override
+        protected void initFab() {
+
+        }
+
+        @Override
+        protected void initDagger(MortarScope scope) {
+            ((Component) scope.getService(DaggerService.SERVICE_NAME)).inject(this);
+        }
+
+
+        public int getCustomState() {
+            return mCustomState;
+        }
+
+        public void setCustomState(int mCustomState) {
+            this.mCustomState = mCustomState;
         }
 
         @Override
@@ -225,7 +243,7 @@ public class AccountScreen extends AbstractScreen<RootActivity.RootComponent> {
 
         @Override
         public void switchViewState() {
-            if (getmCustomState() == AccountView.EDIT_STATE && getView() != null) {
+            if (getCustomState() == AccountView.EDIT_STATE && getView() != null) {
                 mAccountModel.saveProfileInfo(getView().getUserProfileInfo());
 //                mAccountModel.saveAvatarPhoto(mAvatarUri);
             }

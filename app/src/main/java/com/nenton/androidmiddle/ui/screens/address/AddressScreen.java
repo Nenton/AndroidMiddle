@@ -10,6 +10,7 @@ import com.nenton.androidmiddle.di.sqopes.AddressScope;
 import com.nenton.androidmiddle.flow.AbstractScreen;
 import com.nenton.androidmiddle.flow.Screen;
 import com.nenton.androidmiddle.mvp.models.AccountModel;
+import com.nenton.androidmiddle.mvp.presenters.AbstractPresenter;
 import com.nenton.androidmiddle.mvp.presenters.IAddressPresenter;
 import com.nenton.androidmiddle.ui.screens.account.AccountScreen;
 
@@ -75,23 +76,16 @@ public class AddressScreen extends AbstractScreen<AccountScreen.Component> imple
     public interface Component{
         void inject(AddressPresenter addressPresenter);
         void inject(AddressView addressView);
-
     }
 
     //endregion
 
     //region ========================= Presenter =========================
 
-    public class AddressPresenter extends ViewPresenter<AddressView> implements IAddressPresenter{
+    public class AddressPresenter extends AbstractPresenter<AddressView, AccountModel> implements IAddressPresenter{
 
         @Inject
         AccountModel mAccountModel;
-
-        @Override
-        protected void onEnterScope(MortarScope scope) {
-            super.onEnterScope(scope);
-            ((Component) scope.getService(DaggerService.SERVICE_NAME)).inject(this);
-        }
 
         @Override
         protected void onLoad(Bundle savedInstanceState) {
@@ -99,6 +93,21 @@ public class AddressScreen extends AbstractScreen<AccountScreen.Component> imple
             if (mAddress != null && getView() != null){
                 getView().initView(mAddress);
             }
+        }
+
+        @Override
+        protected void initActionBar() {
+
+        }
+
+        @Override
+        protected void initFab() {
+
+        }
+
+        @Override
+        protected void initDagger(MortarScope scope) {
+            ((Component)scope.getService(DaggerService.SERVICE_NAME)).inject(this);
         }
 
         @Override

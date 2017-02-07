@@ -10,6 +10,7 @@ import android.widget.RelativeLayout;
 import com.nenton.androidmiddle.R;
 import com.nenton.androidmiddle.data.storage.dto.UserAddressDto;
 import com.nenton.androidmiddle.di.DaggerService;
+import com.nenton.androidmiddle.mvp.views.AbstractView;
 import com.nenton.androidmiddle.mvp.views.IAddressView;
 
 import javax.inject.Inject;
@@ -18,7 +19,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class AddressView extends RelativeLayout implements IAddressView {
+public class AddressView extends AbstractView<AddressScreen.AddressPresenter> implements IAddressView {
 
     @BindView(R.id.address_name_et)
     EditText mAddressName;
@@ -42,10 +43,13 @@ public class AddressView extends RelativeLayout implements IAddressView {
 
     public AddressView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        if (!isInEditMode()) {
-            DaggerService.<AddressScreen.Component>getDaggerComponent(context).inject(this);
-        }
     }
+
+    @Override
+    protected void initDagger(Context context) {
+        DaggerService.<AddressScreen.Component>getDaggerComponent(context).inject(this);
+    }
+
     public void initView(@Nullable UserAddressDto address){
         if (address != null){
             mAddressId = address.getId();
@@ -58,33 +62,6 @@ public class AddressView extends RelativeLayout implements IAddressView {
             mButton.setText("Сохранить");
         }
     }
-
-    //region ========================= LifeCycle =========================
-
-
-    @Override
-    protected void onFinishInflate() {
-        super.onFinishInflate();
-        ButterKnife.bind(this);
-
-    }
-
-    @Override
-    public void onAttachedToWindow() {
-        super.onAttachedToWindow();
-        if (!isInEditMode()) {
-            mPresenter.takeView(this);
-        }
-    }
-
-    @Override
-    public void onDetachedFromWindow() {
-        super.onDetachedFromWindow();
-        if (!isInEditMode()) {
-            mPresenter.dropView(this);
-        }
-    }
-    //endregion
 
     //region ========================= IAddressView =========================
 

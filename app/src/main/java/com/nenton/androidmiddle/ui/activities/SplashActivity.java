@@ -55,7 +55,7 @@ public class SplashActivity extends AppCompatActivity implements IRootView {
         BundleServiceRunner.getBundleServiceRunner(this).onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
         ButterKnife.bind(this);
-        DaggerService.<RootActivity.RootComponent>getDaggerComponent(this).inject(this);
+//        DaggerService.<RootActivity.RootComponent>getDaggerComponent(this).inject(this);
     }
 
     @Override

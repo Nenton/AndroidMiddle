@@ -22,6 +22,7 @@ import com.nenton.androidmiddle.data.storage.dto.UserDto;
 import com.nenton.androidmiddle.data.storage.dto.UserInfoDto;
 import com.nenton.androidmiddle.data.storage.dto.UserSettingsDto;
 import com.nenton.androidmiddle.di.DaggerService;
+import com.nenton.androidmiddle.mvp.views.AbstractView;
 import com.nenton.androidmiddle.mvp.views.IAccountView;
 import com.nenton.androidmiddle.ui.screens.address.AddressesAdapter;
 import com.squareup.picasso.Picasso;
@@ -34,7 +35,7 @@ import butterknife.OnClick;
 import de.hdodenhof.circleimageview.CircleImageView;
 import flow.Flow;
 
-public class AccountView extends CoordinatorLayout implements IAccountView {
+public class AccountView extends AbstractView<AccountScreen.AccountPresenter> implements IAccountView {
 
     public static final int PREVIEW_STATE = 1;
     public static final int EDIT_STATE = 0;
@@ -63,7 +64,7 @@ public class AccountView extends CoordinatorLayout implements IAccountView {
     @BindView(R.id.notification_promo_sw)
     SwitchCompat mNotificationPromoSW;
 
-    private AccountScreen mAccountScreen;
+//    private AccountScreen mAccountScreen;
 
     private UserDto mUserDto;
     private TextWatcher mWatcher;
@@ -76,39 +77,19 @@ public class AccountView extends CoordinatorLayout implements IAccountView {
 
     public AccountView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        if (!isInEditMode()) {
-            mAccountScreen = Flow.getKey(this);
-            DaggerService.<AccountScreen.Component>getDaggerComponent(context).inject(this);
-        }
     }
 
     @Override
-    protected void onFinishInflate() {
-        super.onFinishInflate();
-        ButterKnife.bind(this);
+    protected void initDagger(Context context) {
+        DaggerService.<AccountScreen.Component>getDaggerComponent(context).inject(this);
     }
 
+
     private void showViewFromState() {
-        if (mAccountScreen.getmCustomState() == PREVIEW_STATE) {
+        if (mPresenter.getCustomState() == PREVIEW_STATE) {
             showPreviewState();
         } else {
             showEditState();
-        }
-    }
-
-    @Override
-    public void onAttachedToWindow() {
-        super.onAttachedToWindow();
-        if (!isInEditMode()) {
-            mPresenter.takeView(this);
-        }
-    }
-
-    @Override
-    public void onDetachedFromWindow() {
-        super.onDetachedFromWindow();
-        if (!isInEditMode()) {
-            mPresenter.dropView(this);
         }
     }
 
@@ -179,10 +160,10 @@ public class AccountView extends CoordinatorLayout implements IAccountView {
 
     @Override
     public void changeState() {
-        if (mAccountScreen.getmCustomState() == PREVIEW_STATE) {
-            mAccountScreen.setmCustomState(EDIT_STATE);
+        if (mPresenter.getCustomState() == PREVIEW_STATE) {
+            mPresenter.setCustomState(EDIT_STATE);
         } else {
-            mAccountScreen.setmCustomState(PREVIEW_STATE);
+            mPresenter.setCustomState(PREVIEW_STATE);
         }
         showViewFromState();
 
@@ -258,7 +239,7 @@ public class AccountView extends CoordinatorLayout implements IAccountView {
 
     @Override
     public boolean viewOnBackPressed() {
-        if (mAccountScreen.getmCustomState() == EDIT_STATE) {
+        if (mPresenter.getCustomState() == EDIT_STATE) {
             mPresenter.switchViewState();
 //            changeState();
             return true;
@@ -292,7 +273,7 @@ public class AccountView extends CoordinatorLayout implements IAccountView {
         mProfileNameTxt.setText(infoDto.getName());
         mUserFullNameET.setText(infoDto.getName());
         mUserPhoneET.setText(infoDto.getPhone());
-        if (mAccountScreen.getmCustomState() == PREVIEW_STATE) {
+        if (mPresenter.getCustomState() == PREVIEW_STATE) {
             mAvatarUri = Uri.parse(infoDto.getAvatar());
             insertAvatar();
         }
@@ -314,7 +295,7 @@ public class AccountView extends CoordinatorLayout implements IAccountView {
 
     @OnClick(R.id.user_avatar_img)
     void clickChangeAvatar() {
-        if (mAccountScreen.getmCustomState() == EDIT_STATE) {
+        if (mPresenter.getCustomState() == EDIT_STATE) {
             mPresenter.takePhoto();
         }
     }

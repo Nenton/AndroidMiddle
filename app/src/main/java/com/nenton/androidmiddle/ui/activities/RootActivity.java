@@ -42,6 +42,7 @@ import com.nenton.androidmiddle.mvp.views.IRootView;
 import com.nenton.androidmiddle.mvp.views.IView;
 
 import com.nenton.androidmiddle.ui.screens.account.AccountScreen;
+import com.nenton.androidmiddle.ui.screens.auth.AuthScreen;
 import com.nenton.androidmiddle.ui.screens.catalog.CatalogScreen;
 import com.nenton.androidmiddle.utils.App;
 import com.squareup.picasso.Picasso;
@@ -83,7 +84,7 @@ public class RootActivity extends AppCompatActivity implements IRootView, Naviga
     @Override
     protected void attachBaseContext(Context newBase) {
         newBase = Flow.configure(newBase,this)
-                .defaultKey(new CatalogScreen())
+                .defaultKey(new AuthScreen())
                 .dispatcher(new TreeKeyDispatcher(this))
                 .install();
         super.attachBaseContext(newBase);
@@ -240,6 +241,11 @@ public class RootActivity extends AppCompatActivity implements IRootView, Naviga
 
     @Override
     public void setVisable(boolean visable) {
+        if (visable){
+            mActionBar.show();
+        } else {
+            mActionBar.hide();
+        }
         // TODO: 05.01.2017 implement me
     }
 
@@ -309,7 +315,6 @@ public class RootActivity extends AppCompatActivity implements IRootView, Naviga
     @RootScope
     public interface RootComponent {
         void inject(RootActivity rootActivity);
-        void inject(SplashActivity splashActivity);
         void inject(RootPresenter rootPresenter);
         AccountModel getAccountModel();
         RootPresenter getRootPresenter();

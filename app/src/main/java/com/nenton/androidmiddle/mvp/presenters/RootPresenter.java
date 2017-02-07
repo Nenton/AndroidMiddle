@@ -22,7 +22,6 @@ import com.nenton.androidmiddle.data.storage.dto.UserInfoDto;
 import com.nenton.androidmiddle.mvp.models.AccountModel;
 import com.nenton.androidmiddle.mvp.views.IRootView;
 import com.nenton.androidmiddle.ui.activities.RootActivity;
-import com.nenton.androidmiddle.ui.activities.SplashActivity;
 import com.nenton.androidmiddle.utils.App;
 
 import java.util.ArrayList;
@@ -56,9 +55,7 @@ public class RootPresenter extends Presenter<IRootView> {
 
     @Override
     protected BundleService extractBundleService(IRootView view) {
-        return (view instanceof RootActivity) ?
-                BundleService.getBundleService((RootActivity) view) :
-                BundleService.getBundleService((SplashActivity) view);
+        return BundleService.getBundleService((RootActivity) view);
     }
 
     public PublishSubject<ActivityResultDto> getActivityResultDtoObs() {
